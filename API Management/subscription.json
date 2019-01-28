@@ -1,0 +1,34 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "apiManagementInstanceName": {
+            "type": "string"
+        },
+        "name": {
+            "type": "string"
+        },
+        "userName": {
+            "type": "string"
+        },
+        "productName": {
+            "type": "string"
+        },
+        "displayName": {
+            "type": "string"
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.ApiManagement/service/subscriptions",
+            "name": "[concat(parameters('apiManagementInstanceName'), '/', parameters('name'))]",
+            "apiVersion": "2018-01-01",
+            "properties": {
+                "userId": "[resourceId('Microsoft.ApiManagement/service/users', parameters('apiManagementInstanceName'), parameters('userName'))]",
+                "productId": "[resourceId('Microsoft.ApiManagement/service/products', parameters('apiManagementInstanceName'), parameters('productName'))]",
+                "displayName": "[parameters('displayName')]",
+                "state": "active"
+            }
+        }
+    ]
+}

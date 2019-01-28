@@ -1,0 +1,38 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "apiManagementInstanceName": {
+            "type": "string"
+        },
+        "name":{
+            "type": "string"
+        },
+        "firstName":{
+            "type": "string"
+        },
+        "lastName":{
+            "type": "string"
+        },
+        "email":{
+            "type": "string"
+        },
+        "note":{
+            "type": "string"
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.ApiManagement/service/users",
+            "name": "[concat(parameters('apiManagementInstanceName'), '/', parameters('name'))]",
+            "apiVersion": "2018-01-01",
+            "properties": {
+                "firstName": "[parameters('firstName')]",
+                "lastName": "[parameters('lastName')]",
+                "email": "[parameters('email')]",
+                "note": "[parameters('note')]",
+                "confirmation": "invite"
+            }
+        }
+    ]
+}

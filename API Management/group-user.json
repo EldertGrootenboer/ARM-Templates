@@ -1,0 +1,22 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "apiManagementInstanceName": {
+            "type": "string"
+        },
+        "groupName": {
+            "type": "string"
+        },
+        "userName": {
+            "type": "string"
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.ApiManagement/service/groups/users",
+            "name": "[concat(parameters('apiManagementInstanceName'), '/', parameters('groupName'), '/', parameters('userName'))]",
+            "apiVersion": "2017-03-01"
+        }
+    ]
+}

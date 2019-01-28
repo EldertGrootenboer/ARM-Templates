@@ -1,0 +1,54 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "apiManagementInstanceName": {
+            "type": "string"
+        },
+        "name": {
+            "type": "string"
+        },
+        "apiName": {
+            "type": "string"
+        },
+        "displayName": {
+            "type": "string"
+        },
+        "method": {
+            "type": "string"
+        },
+        "urlTemplate": {
+            "type": "string"
+        },
+        "description": {
+            "type": "string"
+        },
+        "policies": {
+            "type": "string"
+        },
+        "request": {
+            "type": "object"
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.ApiManagement/service/apis/operations",
+            "name": "[concat(parameters('apiManagementInstanceName'), '/', parameters('apiName'), '/', parameters('name'))]",
+            "apiVersion": "2018-01-01",
+            "properties": {
+                "displayName": "[parameters('displayName')]",
+                "method": "[parameters('method')]",
+                "urlTemplate": "[parameters('urlTemplate')]",
+                "description": "[parameters('description')]",
+                "request": "[parameters('request')]",
+                "responses": [
+                    {
+                        "statusCode": 200,
+                        "description": "OK"
+                    }
+                ],
+                "policies": "[parameters('policies')]"
+            }
+        }
+    ]
+}
