@@ -22,22 +22,22 @@
         }
     },
     "variables": {
-        "apiType": "[if(parameters('isSoapPassthrough'), 'soap', 'http')]"
+        "apiVersion": "2018-01-01",
+        "apiType": "[if(parameters('isSoapPassthrough'), 'soap', 'http')]",
+        "protocols": ["https"]
     },
     "resources": [
         {
             "type": "Microsoft.ApiManagement/service/apis",
             "name": "[concat(parameters('apiManagementInstanceName'), '/', parameters('name'))]",
-            "apiVersion": "2018-01-01",
+            "apiVersion": "[variables('apiVersion')]",
             "properties": {
                 "displayName": "[parameters('displayName')]",
                 "type": "[variables('apiType')]",
                 "description": "[parameters('description')]",
                 "serviceUrl": "[parameters('serviceURL')]",
                 "path": "[parameters('name')]",
-                "protocols": [
-                    "https"
-                ]
+                "protocols": "[variables('protocols')]"
             }
         }
     ]

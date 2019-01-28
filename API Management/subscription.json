@@ -18,11 +18,14 @@
             "type": "string"
         }
     },
+    "variables": {
+        "apiVersion": "2018-01-01"
+    },
     "resources": [
         {
             "type": "Microsoft.ApiManagement/service/subscriptions",
             "name": "[concat(parameters('apiManagementInstanceName'), '/', parameters('name'))]",
-            "apiVersion": "2018-01-01",
+            "apiVersion": "[variables('apiVersion')]",
             "properties": {
                 "userId": "[resourceId('Microsoft.ApiManagement/service/users', parameters('apiManagementInstanceName'), parameters('userName'))]",
                 "productId": "[resourceId('Microsoft.ApiManagement/service/products', parameters('apiManagementInstanceName'), parameters('productName'))]",
