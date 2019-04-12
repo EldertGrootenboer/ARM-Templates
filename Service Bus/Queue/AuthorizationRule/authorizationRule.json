@@ -12,20 +12,12 @@
             "type": "string"
         },
         "rights": {
-            "type": "array",
-            "allowedValues": [
-                "Manage",
-                "Send",
-                "Listen"
-            ]
+            "type": "array"
         }
-    },
-    "variables": {
-        "apiVersion": "2017-04-01"
     },
     "resources": [
         {
-            "apiVersion": "[variables('apiVersion')]",
+            "apiVersion": "2017-04-01",
             "name": "[concat('/', parameters('serviceBusNamespace'), '/', parameters('serviceBusQueue'), '/', parameters('authorizationRuleName'))]",
             "type": "Microsoft.ServiceBus/namespaces/queues/authorizationRules",
             "properties": {

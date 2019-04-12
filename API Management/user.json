@@ -21,14 +21,11 @@
             "type": "string"
         }
     },
-    "variables": {
-        "apiVersion": "2018-01-01"
-    },
     "resources": [
         {
             "type": "Microsoft.ApiManagement/service/users",
             "name": "[concat(parameters('apiManagementInstanceName'), '/', parameters('name'))]",
-            "apiVersion": "[variables('apiVersion')]",
+            "apiVersion": "2018-01-01",
             "properties": {
                 "firstName": "[parameters('firstName')]",
                 "lastName": "[parameters('lastName')]",

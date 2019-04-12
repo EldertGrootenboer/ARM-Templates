@@ -7,17 +7,46 @@
         },
         "serviceBusNamespace": {
             "type": "string"
+        },
+        "properties": {
+            "type": "object",
+            "defaultValue": {
+                "lockDuration": "PT30S",
+                "maxSizeInMegabytes": 1024,
+                "requiresDuplicateDetection": false,
+                "requiresSession": false,
+                "defaultMessageTimeToLive": "P14D",
+                "deadLetteringOnMessageExpiration": false,
+                "enableBatchedOperations": true,
+                "duplicateDetectionHistoryTimeWindow": "PT10M",
+                "maxDeliveryCount": 10,
+                "enablePartitioning": false,
+                "enableExpress": false
+            }
         }
     },
     "variables": {
-        "apiVersion": "2017-04-01"
+        "defaultProperties": {
+            "lockDuration": "PT30S",
+            "maxSizeInMegabytes": 1024,
+            "requiresDuplicateDetection": false,
+            "requiresSession": false,
+            "defaultMessageTimeToLive": "P14D",
+            "deadLetteringOnMessageExpiration": false,
+            "enableBatchedOperations": true,
+            "duplicateDetectionHistoryTimeWindow": "PT10M",
+            "maxDeliveryCount": 10,
+            "enablePartitioning": false,
+            "enableExpress": false
+        },
+        "queueProperties": "[if(empty(parameters('properties')), variables('defaultProperties'), parameters('properties'))]"
     },
     "resources": [
         {
-            "apiVersion": "[variables('apiVersion')]",
+            "apiVersion": "2017-04-01",
             "name": "[concat('/', parameters('serviceBusNamespace'), '/', parameters('queueName'))]",
             "type": "Microsoft.ServiceBus/namespaces/queues",
-            "properties": {}
+            "properties": "[variables('queueProperties')]"
         }
     ]
 }

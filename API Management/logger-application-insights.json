@@ -1,0 +1,34 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "apiManagementInstanceName": {
+            "type": "string"
+        },
+        "name": {
+            "type": "string"
+        },
+        "applicationInsightsName": {
+            "type": "string"
+        },
+        "applicationInsightsInstrumentationKey": {
+            "type": "string"
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.ApiManagement/service/loggers",
+            "name": "[concat(parameters('apiManagementInstanceName'), '/', parameters('name'))]",
+            "apiVersion": "2018-06-01-preview",
+            "properties": {
+                "loggerType": "applicationInsights",
+                "description": null,
+                "credentials": {
+                    "instrumentationKey": "[parameters('applicationInsightsInstrumentationKey')]"
+                },
+                "isBuffered": true,
+                "resourceId": "[concat('/subscriptions/', subscription().subscriptionId,'/resourceGroups/', resourceGroup().name, '/providers/microsoft.insights/components/', parameters('applicationInsightsName'))]"
+            }
+        }
+    ]
+}

@@ -1,0 +1,30 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "apiManagementInstanceName": {
+            "type": "string"
+        },
+        "name": {
+            "type": "string"
+        },
+        "displayName": {
+            "type": "string"
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.ApiManagement/service/api-version-sets",
+            "name": "[concat(parameters('apiManagementInstanceName'), '/', parameters('name'))]",
+            "apiVersion": "2018-06-01-preview",
+            "scale": null,
+            "properties": {
+                "displayName": "[parameters('displayName')]",
+                "description": null,
+                "versioningScheme": "Query",
+                "versionQueryName": "api-version",
+                "versionHeaderName": null
+            }
+        }
+    ]
+}

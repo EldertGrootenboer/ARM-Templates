@@ -22,7 +22,6 @@
         }
     },
     "variables": {
-        "apiVersion": "2018-01-01",
         "apiType": "[if(parameters('isSoapPassthrough'), 'soap', 'http')]",
         "protocols": ["https"]
     },
@@ -30,7 +29,7 @@
         {
             "type": "Microsoft.ApiManagement/service/apis",
             "name": "[concat(parameters('apiManagementInstanceName'), '/', parameters('name'))]",
-            "apiVersion": "[variables('apiVersion')]",
+            "apiVersion": "2018-01-01",
             "properties": {
                 "displayName": "[parameters('displayName')]",
                 "type": "[variables('apiType')]",

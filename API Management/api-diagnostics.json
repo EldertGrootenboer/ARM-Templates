@@ -1,0 +1,63 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "apiManagementInstanceName": {
+            "type": "string"
+        },
+        "name": {
+            "type": "string"
+        },
+        "apiName": {
+            "type": "string"
+        },
+        "applicationInsightsName": {
+            "type": "string"
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.ApiManagement/service/apis/diagnostics",
+            "name": "[concat(parameters('apiManagementInstanceName'), '/', parameters('apiName'), '/', parameters('name'))]",
+            "apiVersion": "2018-06-01-preview",
+            "properties": {
+                "alwaysLog": "allErrors",
+                "enableHttpCorrelationHeaders": true,
+                "logClientIp": true,
+                "loggerId": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', resourcegroup().name, '/providers/Microsoft.ApiManagement/service/', parameters('apiManagementInstanceName'), '/loggers/', parameters('applicationInsightsName'))]",
+                "sampling": {
+                    "samplingType": "fixed",
+                    "percentage": 20
+                },
+                "frontend": {
+                    "request": {
+                        "headers": [],
+                        "body": {
+                            "bytes": 0
+                        }
+                    },
+                    "response": {
+                        "headers": [],
+                        "body": {
+                            "bytes": 0
+                        }
+                    }
+                },
+                "backend": {
+                    "request": {
+                        "headers": [],
+                        "body": {
+                            "bytes": 0
+                        }
+                    },
+                    "response": {
+                        "headers": [],
+                        "body": {
+                            "bytes": 0
+                        }
+                    }
+                }
+            }
+        }
+    ]
+}

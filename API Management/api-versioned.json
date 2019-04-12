@@ -1,0 +1,53 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "apiManagementInstanceName": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "displayName": {
+          "type": "string"
+        },
+        "serviceURL": {
+          "type": "string"
+        },
+        "description": {
+          "type": "string"
+        },
+        "isSoapPassthrough": {
+          "type": "bool"
+        },
+        "apiVersion": {
+          "type": "string"
+        },
+        "apiVersionSetName": {
+          "type": "string"
+        }
+    },
+    "variables": {
+        "apiType": "[if(parameters('isSoapPassthrough'), 'soap', 'http')]",
+        "apiVerionSetId": "[resourceId('Microsoft.ApiManagement/service/api-version-sets', parameters('apiManagementInstanceName'), parameters('apiVersionSetName'))]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.ApiManagement/service/apis",
+            "name": "[concat(parameters('apiManagementInstanceName'), '/', parameters('name'))]",
+            "apiVersion": "2018-01-01",
+            "properties": {
+                "displayName": "[parameters('displayName')]",
+                "type": "[variables('apiType')]",
+                "description": "[parameters('description')]",
+                "serviceUrl": "[parameters('serviceURL')]",
+                "path": "[parameters('name')]",
+                "protocols": [
+                    "https"
+                ],
+                "apiVersion": "[parameters('apiVersion')]",
+                "apiVersionSetId": "[variables('apiVerionSetId')]"
+            }
+        }
+    ]
+}

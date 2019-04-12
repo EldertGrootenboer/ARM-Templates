@@ -20,12 +20,9 @@
             ]
         }
     },
-    "variables": {
-        "apiVersion": "2017-04-01"
-    },
     "resources": [
         {
-            "apiVersion": "[variables('apiVersion')]",
+            "apiVersion": "2017-04-01",
             "name": "[concat('/', parameters('serviceBusNamespace'), '/', parameters('serviceBusTopic'), '/', parameters('authorizationRuleName'))]",
             "type": "Microsoft.ServiceBus/namespaces/topics/authorizationRules",
             "properties": {

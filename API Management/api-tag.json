@@ -1,0 +1,36 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "apiManagementInstanceName": {
+            "type": "string"
+        },
+        "tagName": {
+            "type": "string"
+        },
+        "apiName": {
+            "type": "string"
+        }
+    },
+    "resources": [
+        {
+            "type": "Microsoft.ApiManagement/service/tags",
+            "name": "[concat(parameters('apiManagementInstanceName'), '/', parameters('tagName'))]",
+            "apiVersion": "2018-01-01",
+            "properties": {
+                "displayName": "[parameters('tagName')]"
+            }
+        },
+        {
+            "type": "Microsoft.ApiManagement/service/apis/tags",
+            "name": "[concat(parameters('apiManagementInstanceName'), '/', parameters('apiName'), '/', parameters('tagName'))]",
+            "apiVersion": "2018-01-01",
+            "properties": {
+                "displayName": "[parameters('tagName')]"
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.ApiManagement/service/tags', parameters('apiManagementInstanceName'), parameters('tagName'))]"
+            ]
+        }
+    ]
+}

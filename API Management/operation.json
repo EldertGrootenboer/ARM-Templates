@@ -23,15 +23,11 @@
         "description": {
             "type": "string"
         },
-        "policies": {
-            "type": "string"
-        },
         "request": {
             "type": "object"
         }
     },
     "variables": {
-        "apiVersion": "2018-01-01",
         "responses": [
             {
                 "statusCode": 200,
@@ -43,15 +39,14 @@
         {
             "type": "Microsoft.ApiManagement/service/apis/operations",
             "name": "[concat(parameters('apiManagementInstanceName'), '/', parameters('apiName'), '/', parameters('name'))]",
-            "apiVersion": "[variables('apiVersion')]",
+            "apiVersion": "2018-01-01",
             "properties": {
                 "displayName": "[parameters('displayName')]",
                 "method": "[parameters('method')]",
                 "urlTemplate": "[parameters('urlTemplate')]",
                 "description": "[parameters('description')]",
                 "request": "[parameters('request')]",
-                "responses": "[variables('responses')]",
-                "policies": "[parameters('policies')]"
+                "responses": "[variables('responses')]"
             }
         }
     ]

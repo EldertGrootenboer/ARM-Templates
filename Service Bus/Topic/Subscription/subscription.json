@@ -10,17 +10,18 @@
         },
         "serviceBusTopic": {
             "type": "string"
+        },
+        "properties": {
+            "type": "object",
+            "defaultValue": {}
         }
-    },
-    "variables": {
-        "apiVersion": "2017-04-01"
     },
     "resources": [
         {
-            "apiVersion": "[variables('apiVersion')]",
+            "apiVersion": "2017-04-01",
             "name": "[concat('/', parameters('serviceBusNamespace'), '/', parameters('serviceBusTopic'), '/', parameters('subscriptionName'))]",
             "type": "Microsoft.ServiceBus/namespaces/topics/subscriptions",
-            "properties": {}
+            "properties": "[parameters('properties')]"
         }
     ]
 }
