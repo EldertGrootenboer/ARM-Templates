@@ -1,0 +1,186 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "templatesStorageAccountName": {
+            "type": "string"
+        },
+        "templatesContainerName": {
+            "type": "string"
+        },
+        "apiManagementInstanceName": {
+            "type": "string"
+        },
+        "tags": {
+            "type": "object"
+        },
+        "adminEmail": {
+            "type": "string"
+        },
+        "organisationName": {
+            "type": "string"
+        },
+        "tier": {
+            "type": "string"
+        },
+        "capacity": {
+            "type": "int"
+        },
+        "applicationInsightsName": {
+            "type": "string"
+        },
+        "utcNow": {
+            "type": "string",
+            "defaultValue": "[utcNow('yyyy-MM-ddThh:mm:ssZ')]"
+        }
+    },
+    "variables": {
+        "userLogicAppsName": "LogicApps",
+        "userLogicAppsFirstName": "Logic",
+        "userLogicAppsLastName": "Apps",
+        "userLogicAppsEmail": "noreply@boskalis.com",
+        "userLogicAppsNote": "Service user for Logic Apps.",
+        "subscriptionLogicAppsName": "LogicApps",
+        // Currently we need to calculate the expiry date ourselves, which is why we are better off using a PowerShell Task Group
+        // Once a addDate type of function is added, with which we can just add x minutes, this self calculation is no longer needed and we can just set the expiry date that way
+        "hour": "[substring(parameters('utcNow'), 11, 2)]",
+        "day": "[substring(parameters('utcNow'), 8, 2)]",
+        "month": "[substring(parameters('utcNow'), 5, 2)]",
+        "year": "[substring(parameters('utcNow'), 0, 4)]",
+        "newHour": "[if(less(add(int(variables('hour')), 1), 24), add(int(variables('hour')), 1), 0)]",
+        "newDay": "[if(equals(variables('newHour'), 0), if(lessOrEquals(add(int(variables('day')), 1), 28), add(int(variables('day')), 1), 1), variables('day'))]",
+        "newMonth": "[if(equals(variables('newDay'), 1), if(lessOrEquals(add(int(variables('month')), 1), 12), add(int(variables('month')), 1), 1), variables('month'))]",
+        "newYear": "[if(equals(variables('newMonth'), 1), add(int(variables('year')), 1), variables('year'))]",
+        "newDateTime": "[concat(variables('newYear'), '-', variables('newMonth'), '-', variables('newDay'), 'T', variables('newHour'), ':59:00Z')]",
+        // End of expiry date calculation
+        "templatesStorageAccountSasProperties": {
+            "signedServices": "bt",
+            "signedPermission": "racluw",
+            "signedExpiry": "[variables('newDateTime')]",
+            "signedResourceTypes": "sco"
+        },
+        "templatesStorageAccountUrl": "[concat('https://', parameters('templatesStorageAccountName'), '.blob.core.windows.net/', parameters('templatesContainerName'))]",
+        "templatesStorageAccountResourceName": "[concat('Microsoft.Storage/storageAccounts/', parameters('templatesStorageAccountName'))]"
+    },
+    "resources": [
+        {
+            "name": "[concat('ApimInstanceDeployment', parameters('apiManagementInstanceName'))]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2018-05-01",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('templatesStorageAccountUrl'), '/API Management/instance.json?', listAccountSas(variables('templatesStorageAccountResourceName'), '2018-11-01', variables('templatesStorageAccountSasProperties')).accountSasToken)]"
+                },
+                "parameters": {
+                    "name": {
+                        "value": "[parameters('apiManagementInstanceName')]"
+                    },
+                    "tags": {
+                        "value": "[parameters('tags')]"
+                    },
+                    "adminEmail": {
+                        "value": "[parameters('adminEmail')]"
+                    },
+                    "orgName": {
+                        "value": "[parameters('organisationName')]"
+                    },
+                    "tier": {
+                        "value": "[parameters('tier')]"
+                    },
+                    "capacity": {
+                        "value": "[parameters('capacity')]"
+                    }
+                }
+            }
+        },
+        {
+            "name": "[concat('ApimLoggerDeployment', parameters('applicationInsightsName'))]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2018-05-01",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('templatesStorageAccountUrl'), '/API Management/logger-application-insights.json?', listAccountSas(variables('templatesStorageAccountResourceName'), '2018-11-01', variables('templatesStorageAccountSasProperties')).accountSasToken)]"
+                },
+                "parameters": {
+                    "apiManagementInstanceName": {
+                        "value": "[parameters('apiManagementInstanceName')]"
+                    },
+                    "name": {
+                        "value": "[parameters('applicationInsightsName')]"
+                    },
+                    "applicationInsightsName": {
+                        "value": "[parameters('applicationInsightsName')]"
+                    }
+                }
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', concat('ApimInstanceDeployment', parameters('apiManagementInstanceName')))]"
+            ]
+        },
+        {
+            "name": "[concat('ApimUserLogicAppsDeployment', variables('userLogicAppsName'))]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2018-05-01",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('templatesStorageAccountUrl'), '/API Management/user.json?', listAccountSas(variables('templatesStorageAccountResourceName'), '2018-11-01', variables('templatesStorageAccountSasProperties')).accountSasToken)]"
+                },
+                "parameters": {
+                    "apiManagementInstanceName": {
+                        "value": "[parameters('apiManagementInstanceName')]"
+                    },
+                    "name": {
+                        "value": "[variables('userLogicAppsName')]"
+                    },
+                    "firstName": {
+                        "value": "[variables('userLogicAppsFirstName')]"
+                    },
+                    "lastName": {
+                        "value": "[variables('userLogicAppsLastName')]"
+                    },
+                    "email": {
+                        "value": "[variables('userLogicAppsEmail')]"
+                    },
+                    "note": {
+                        "value": "[variables('userLogicAppsNote')]"
+                    }
+                }
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', concat('ApimInstanceDeployment', parameters('apiManagementInstanceName')))]"
+            ]
+        },
+        {
+            "name": "[concat('ApimSubscriptionLogicAppsDeployment', variables('subscriptionLogicAppsName'))]",
+            "type": "Microsoft.Resources/deployments",
+            "apiVersion": "2018-05-01",
+            "properties": {
+                "mode": "Incremental",
+                "templateLink": {
+                    "uri": "[concat(variables('templatesStorageAccountUrl'), '/API Management/subscription-all-apis.json?', listAccountSas(variables('templatesStorageAccountResourceName'), '2018-11-01', variables('templatesStorageAccountSasProperties')).accountSasToken)]"
+                },
+                "parameters": {
+                    "apiManagementInstanceName": {
+                        "value": "[parameters('apiManagementInstanceName')]"
+                    },
+                    "name": {
+                        "value": "[variables('subscriptionLogicAppsName')]"
+                    },
+                    "userName": {
+                        "value": "[variables('userLogicAppsName')]"
+                    },
+                    "displayName": {
+                        "value": "[variables('subscriptionLogicAppsName')]"
+                    }
+                }
+            },
+            "dependsOn": [
+                "[resourceId('Microsoft.Resources/deployments', concat('ApimInstanceDeployment', parameters('apiManagementInstanceName')))]",
+                "[resourceId('Microsoft.Resources/deployments', concat('ApimUserLogicAppsDeployment', variables('userLogicAppsName')))]"
+            ]
+        }
+    ]
+}
