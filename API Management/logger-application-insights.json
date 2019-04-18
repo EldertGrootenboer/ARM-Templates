@@ -10,9 +10,6 @@
         },
         "applicationInsightsName": {
             "type": "string"
-        },
-        "applicationInsightsInstrumentationKey": {
-            "type": "string"
         }
     },
     "resources": [
@@ -24,7 +21,7 @@
                 "loggerType": "applicationInsights",
                 "description": null,
                 "credentials": {
-                    "instrumentationKey": "[parameters('applicationInsightsInstrumentationKey')]"
+                    "instrumentationKey": "[reference(resourceId('Microsoft.Insights/components', parameters('applicationInsightsName')), '2014-04-01').InstrumentationKey]"
                 },
                 "isBuffered": true,
                 "resourceId": "[concat('/subscriptions/', subscription().subscriptionId,'/resourceGroups/', resourceGroup().name, '/providers/microsoft.insights/components/', parameters('applicationInsightsName'))]"
