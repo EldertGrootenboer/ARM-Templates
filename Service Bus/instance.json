@@ -1,0 +1,41 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01-preview/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "type": "string"
+        },
+        "tags": {
+            "type": "object",
+            "defaultValue": []
+        },
+        "sku": {
+            "type": "string"
+        },
+        "skuCapacity": {
+            "type": "int",
+            "defaultValue": 1
+        },
+        "zoneRedundant": {
+            "type": "bool",
+            "defaultValue": false
+        }
+    },
+    "resources": [
+        {
+            "name": "[parameters('name')]",
+            "type": "Microsoft.ServiceBus/namespaces",
+            "apiVersion": "2018-01-01-preview",
+            "sku": {
+                "name": "[parameters('sku')]",
+                "tier": "[parameters('sku')]",
+                "capacity": "[parameters('skuCapacity')]"
+            },
+            "location": "[resourceGroup().location]",
+            "tags": "[parameters('tags')]",
+            "properties": {
+                "zoneRedundant": "[parameters('zoneRedundant')]"
+            }
+        }
+    ]
+}
