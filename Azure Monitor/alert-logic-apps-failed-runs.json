@@ -1,0 +1,67 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "logicAppName": {
+            "type": "string"
+        },
+        "tags": {
+            "type": "object"
+        },
+        "actionGroupName": {
+            "type": "string"
+        }
+    },
+    "variables": {
+        "alertName": "[concat(parameters('logicAppName'), ' - Number of failed runs greater then 0')]",
+        "location": "global",
+        "description": "",
+        "severity": 3,
+        "evaluationFrequency": "PT1M",
+        "windowSize": "PT5M",
+        "metricName": "RunsFailed",
+        "metricNamespace": "Microsoft.Logic/workflows",
+        "operator": "GreaterThan",
+        "timeAggregation": "Total",
+        "actionGroupId": "[resourceId('Microsoft.Insights/actionGroups', parameters('actionGroupName'))]",
+        "threshold": 0
+    },
+    "resources": [
+        {
+            "name": "[variables('alertName')]",
+            "type": "Microsoft.Insights/metricAlerts",
+            "apiVersion": "2018-03-01",
+            "location": "[variables('location')]",
+            "tags": "[parameters('tags')]",
+            "properties": {
+                "description": "[variables('description')]",
+                "severity": "[variables('severity')]",
+                "enabled": true,
+                "scopes": [
+                    "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', resourceGroup().name, '/providers/Microsoft.Logic/workflows/', parameters('logicAppName'))]"
+                ],
+                "evaluationFrequency": "[variables('evaluationFrequency')]",
+                "windowSize": "[variables('windowSize')]",
+                "criteria": {
+                    "odata.type": "Microsoft.Azure.Monitor.SingleResourceMultipleMetricCriteria",
+                    "allOf": [
+                        {
+                            "name": "[variables('metricName')]",
+                            "metricName": "[variables('metricName')]",
+                            "metricNamespace": "[variables('metricNamespace')]",
+                            "dimensions": [],
+                            "operator": "[variables('operator')]",
+                            "threshold": "[variables('threshold')]",
+                            "timeAggregation": "[variables('timeAggregation')]"
+                        }
+                    ]
+                },
+                "actions": [
+                    {
+                        "actionGroupId": "[variables('actionGroupId')]"
+                    }
+                ]
+            }
+        }
+    ]
+}

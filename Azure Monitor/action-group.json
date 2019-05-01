@@ -1,0 +1,58 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "actionGroupName": {
+            "type": "string"
+        },
+        "tags": {
+            "type": "object"
+        },
+        "emailAddress": {
+            "type": "string",
+            "defaultValue": ""
+        },
+        "logicAppName": {
+            "type": "string",
+            "defaultValue": ""
+        }
+    },
+    "variables": {
+        "location": "Global",
+        "emailReceiverName": "[concat('emailReceiver', parameters('actionGroupName'))]",
+        "logicAppReceiverName": "[concat('logicAppReceiver', parameters('actionGroupName'))]",
+        "logicAppResourceId": "[if(empty(parameters('logicAppName')), '', resourceId('Microsoft.Logic/workflows', parameters('logicAppName')))]",
+        "logicAppCallbackUrl": "[if(empty(parameters('logicAppName')), '', listCallbackURL(concat(resourceId('Microsoft.Logic/workflows', parameters('logicAppName')), '/triggers/manual'), '2016-06-01').value)]",
+        "emptyArray": [],
+        "preparedEmailAppReceiver": [
+            {
+                "name": "[variables('emailReceiverName')]",
+                "emailAddress": "[parameters('emailAddress')]"
+            }
+        ],
+        "preparedLogicAppReceiver": [
+            {
+                "name": "[variables('logicAppReceiverName')]",
+                "resourceId": "[variables('logicAppResourceId')]",
+                "callbackUrl": "[variables('logicAppCallbackUrl')]"
+            }
+        ],
+        "emailReceiver": "[if(empty(parameters('emailAddress')), variables('emptyArray'), variables('preparedEmailAppReceiver'))]",
+        "logicAppReceiver": "[if(empty(parameters('logicAppName')), variables('emptyArray'), variables('preparedLogicAppReceiver'))]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Insights/actionGroups",
+            "apiVersion": "2018-03-01",
+            "name": "[parameters('actionGroupName')]",
+            "location": "[variables('location')]",
+            "tags": "[parameters('tags')]",
+            "properties": {
+                "groupShortName": "[substring(parameters('actionGroupName'), 0, 12)]",
+                "enabled": true,
+                "emailReceivers": "[variables('emailReceiver')]",
+                "logicAppReceivers": "[variables('logicAppReceiver')]"
+            }
+        }
+    ]
+}
