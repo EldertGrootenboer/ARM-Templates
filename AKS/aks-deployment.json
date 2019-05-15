@@ -1,0 +1,259 @@
+﻿{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "resourceName": {
+      "type": "string",
+      "metadata": {
+        "description": "The name of the Managed Cluster resource."
+      }
+    },
+    "dnsPrefix": {
+      "type": "string",
+      "metadata": {
+        "description": "Optional DNS prefix to use with hosted Kubernetes API server FQDN."
+      }
+    },
+    "agentCount": {
+      "type": "int",
+      "defaultValue": 3,
+      "metadata": {
+        "description": "The number of agent nodes for the cluster."
+      },
+      "minValue": 1,
+      "maxValue": 50
+    },
+    "agentVMSize": {
+      "type": "string",
+      "defaultValue": "Standard_D2_v2",
+      "metadata": {
+        "description": "The size of the Virtual Machine."
+      }
+    },
+    "agentOsDiskSizeGB": {
+      "type": "int",
+      "defaultValue": 0,
+      "metadata": {
+        "description": "Disk size (in GB) to provision for each of the agent pool nodes. This value ranges from 0 to 1023. Specifying 0 will apply the default disk size for that agentVMSize."
+      },
+      "minValue": 0,
+      "maxValue": 1023
+    },
+    "maxPods": {
+      "type": "int",
+      "defaultValue": 30
+    },
+    "servicePrincipalClientId": {
+      "metadata": {
+        "description": "Client ID (used by cloudprovider)"
+      },
+      "type": "securestring"
+    },
+    "servicePrincipalClientSecret": {
+      "metadata": {
+        "description": "The Service Principal Client Secret."
+      },
+      "type": "securestring"
+    },
+    "principalId": {
+      "type": "string",
+      "metadata": {
+        "description": "The objectId of service principal"
+      }
+    },
+    "workspaceName": {
+      "type": "string",
+      "metadata": {
+        "description": "Specify the name of the OMS workspace"
+      }
+    },
+    "workspaceResourcegroupName": {
+      "type": "string"
+    },
+    "workspaceRegion": {
+      "type": "string",
+      "defaultValue": "East US",
+      "metadata": {
+        "description": "Specify the region for your OMS workspace"
+      }
+    },
+    "enableHttpApplicationRouting": {
+      "type": "bool",
+      "defaultValue": true,
+      "metadata": {
+        "description": "boolean flag to turn on and off of http application routing"
+      }
+    },
+    "enableRBAC": {
+      "type": "bool",
+      "defaultValue": true,
+      "metadata": {
+        "description": "boolean flag to turn on and off of RBAC"
+      }
+    },
+    "vnetName": {
+      "type": "string"
+    },
+    "vnetResourcegroup": {
+      "type": "string"
+    },
+    "subnetName": {
+      "type": "string"
+    },
+    "serviceCidr": {
+      "type": "string",
+      "metadata": {
+        "description": "A CIDR notation IP range from which to assign service cluster IPs."
+      }
+    },
+    "dnsServiceIP": {
+      "type": "string",
+      "metadata": {
+        "description": "Containers DNS server IP address."
+      }
+    },
+    "dockerBridgeCidr": {
+      "type": "string",
+      "metadata": {
+        "description": "A CIDR notation IP for Docker bridge."
+      }
+    },
+    "storage_uri": {
+      "type": "string"
+    },
+    "storage_sas_token": {
+      "type": "string"
+    }
+  },
+  "variables": {
+    "location": "[resourceGroup().location]",
+    "networkPlugin": "azure",
+    "enableOmsAgent": true,
+    "omsWorkspaceId": "[resourceId(parameters('workspaceResourcegroupName'), 'Microsoft.OperationalInsights/workspaces', parameters('workspaceName'))]",
+    "vnetSubnetId": "[resourceId(parameters('vnetResourcegroup'), 'Microsoft.Network/virtualNetworks/subnets', parameters('vnetName'), parameters('subnetName'))]",
+    "osType": "Linux"
+  },
+  "resources": [
+    {
+      "apiVersion": "2017-05-10",
+      "dependsOn": [
+        "[concat(parameters('resourceName'), '_SubnetRoleAssignment')]"
+      ],
+      "type": "Microsoft.Resources/deployments",
+      "name": "[concat(parameters('resourceName'), '_ManagedCluster')]",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(parameters('storage_uri'), '/AKS/Resources/managed-cluster.json', parameters('storage_sas_token'))]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "clusterName": {
+            "value": "[parameters('resourceName')]"
+          },
+          "location": {
+            "value": "[variables('location')]"
+          },
+          "dnsPrefix": {
+            "value": "[parameters('dnsPrefix')]"
+          },
+          "enableHttpApplicationRouting": {
+            "value": "[parameters('enableHttpApplicationRouting')]"
+          },
+          "enableRBAC": {
+            "value": "[parameters('enableRBAC')]"
+          },
+          "enableOmsAgent": {
+            "value": "[variables('enableOmsAgent')]"
+          },
+          "omsWorkspaceId": {
+            "value": "[variables('omsWorkspaceId')]"
+          },
+          "servicePrincipalClientId": {
+            "value": "[parameters('servicePrincipalClientId')]"
+          },
+          "servicePrincipalClientSecret": {
+            "value": "[parameters('servicePrincipalClientSecret')]"
+          },
+          "agentCount": {
+            "value": "[parameters('agentCount')]"
+          },
+          "agentVMSize": {
+            "value": "[parameters('agentVMSize')]"
+          },
+          "agentOsDiskSizeGB": {
+            "value": "[parameters('agentOsDiskSizeGB')]"
+          },
+          "maxPods": {
+            "value": "[parameters('maxPods')]"
+          },
+          "osType": {
+            "value": "[variables('osType')]"
+          },
+          "vnetSubnetId": {
+            "value": "[variables('vnetSubnetId')]"
+          },
+          "networkplugin": {
+            "value": "[variables('networkPlugin')]"
+          },
+          "serviceCidr": {
+            "value": "[parameters('serviceCidr')]"
+          },
+          "dnsServiceIP": {
+            "value": "[parameters('dnsServiceIP')]"
+          },
+          "dockerBridgeCidr": {
+            "value": "[parameters('dockerBridgeCidr')]"
+          }
+        }
+      }
+    },
+    {
+      "apiVersion": "2017-05-10",
+      "dependsOn": [],
+      "type": "Microsoft.Resources/deployments",
+      "name": "[concat(parameters('resourceName'), '_OmsSolutionDeployment')]",
+      "resourceGroup": "[split(variables('omsWorkspaceId'),'/')[4]]",
+      "subscriptionId": "[split(variables('omsWorkspaceId'),'/')[2]]",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(parameters('storage_uri'), '/AKS/Resources/oms-solution.json', parameters('storage_sas_token'))]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "omsWorkspaceId": {
+            "value": "[variables('omsWorkspaceId')]"
+          },
+          "location": {
+            "value": "[variables('location')]"
+          }
+        }
+      }
+    },
+    {
+      "apiVersion": "2017-05-10",
+      "dependsOn": [],
+      "type": "Microsoft.Resources/deployments",
+      "name": "[concat(parameters('resourceName'), '_SubnetRoleAssignment')]",
+      "resourceGroup": "[split(variables('vnetSubnetId'),'/')[4]]",
+      "subscriptionId": "[split(variables('vnetSubnetId'),'/')[2]]",
+      "properties": {
+        "mode": "Incremental",
+        "templateLink": {
+          "uri": "[concat(parameters('storage_uri'), '/AKS/Resources/subnet-roleassignment.json', parameters('storage_sas_token'))]",
+          "contentVersion": "1.0.0.0"
+        },
+        "parameters": {
+          "vnetSubnetId": {
+            "value": "[variables('vnetSubnetId')]"
+          },
+          "principalId": {
+            "value": "[parameters('principalId')]"
+          }
+        }
+      }
+    }
+  ],
+  "outputs": { }
+}

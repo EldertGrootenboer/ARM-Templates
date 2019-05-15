@@ -1,0 +1,25 @@
+﻿{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "vnetSubnetId": {
+      "type": "string"
+    },
+    "principalId": {
+      "type": "string"
+    }
+  },
+  "variables": {},
+  "resources": [
+    {
+      "apiVersion": "2017-05-01",
+      "type": "Microsoft.Network/virtualNetworks/subnets/providers/roleAssignments",
+      "name": "[concat(split(parameters('vnetSubnetId'),'/')[8], '/', split(parameters('vnetSubnetId'),'/')[10], '/Microsoft.Authorization/d0524c47-5081-43dd-9989-219ca2a08d3f')]",
+      "properties": {
+        "roleDefinitionId": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Authorization/roleDefinitions/', '4d97b98b-1d4f-4787-a291-c67834d212e7')]",
+        "principalId": "[parameters('principalId')]",
+        "scope": "[parameters('vnetSubnetId')]"
+      }
+    }
+  ]
+}

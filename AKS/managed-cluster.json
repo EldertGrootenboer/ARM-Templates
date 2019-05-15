@@ -1,0 +1,117 @@
+﻿{
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "clusterName": {
+      "type": "string"
+    },
+    "location": {
+      "type": "string"
+    },
+    "dnsPrefix": {
+      "type": "string"
+    },
+    "enableHttpApplicationRouting": {
+      "type": "bool"
+    },
+    "enableRBAC": {
+      "type": "bool"
+    },
+    "enableOmsAgent": {
+      "type": "bool"
+    },
+    "omsWorkspaceId": {
+      "type": "string"
+    },
+    "servicePrincipalClientId": {
+      "type": "securestring"
+    },
+    "servicePrincipalClientSecret": {
+      "type": "securestring"
+    },
+    "agentCount": {
+      "type": "int"
+    },
+    "agentVMSize": {
+      "type": "string"
+    },
+    "agentOsDiskSizeGB": {
+      "type": "int"
+    },
+    "maxPods": {
+      "type": "int"
+    },
+    "osType": {
+      "type": "string"
+    },
+    "vnetSubnetId": {
+      "type": "string"
+    },
+    "networkplugin": {
+      "type": "string"
+    },
+    "serviceCidr": {
+      "type": "string"
+    },
+    "dnsServiceIP": {
+      "type": "string"
+    },
+    "dockerBridgeCidr": {
+      "type": "string"
+    }
+  },
+  "variables": {
+  },
+  "resources": [
+    {
+      "apiVersion": "2018-03-31",
+      "type": "Microsoft.ContainerService/managedClusters",
+      "location": "[parameters('location')]",
+      "name": "[parameters('clusterName')]",
+      "properties": {
+        "enableRBAC": "[parameters('enableRBAC')]",
+        "dnsPrefix": "[parameters('dnsPrefix')]",
+        "addonProfiles": {
+          "httpApplicationRouting": {
+            "enabled": "[parameters('enableHttpApplicationRouting')]"
+          },
+          "omsagent": {
+            "enabled": "[parameters('enableOmsAgent')]",
+            "config": {
+              "logAnalyticsWorkspaceResourceID": "[parameters('omsWorkspaceId')]"
+            }
+          }
+        },
+        "agentPoolProfiles": [
+          {
+            "name": "agentpool",
+            "osDiskSizeGB": "[parameters('agentOsDiskSizeGB')]",
+            "count": "[parameters('agentCount')]",
+            "vmSize": "[parameters('agentVMSize')]",
+            "maxPods": "[parameters('maxPods')]",
+            "osType": "[parameters('osType')]",
+            "storageProfile": "ManagedDisks",
+            "vnetSubnetID": "[parameters('vnetSubnetId')]"
+          }
+        ],
+        "servicePrincipalProfile": {
+          "ClientId": "[parameters('servicePrincipalClientId')]",
+          "Secret": "[parameters('servicePrincipalClientSecret')]"
+        },
+        "networkProfile": {
+          "networkPlugin": "[parameters('networkPlugin')]",
+          "serviceCidr": "[parameters('serviceCidr')]",
+          "dnsServiceIP": "[parameters('dnsServiceIP')]",
+          "dockerBridgeCidr": "[parameters('dockerBridgeCidr')]"
+        }
+      },
+      "tags": {}
+    }
+  ],
+  "outputs": {
+    "controlPlaneFQDN": {
+      "type": "string",
+      "value": "[reference(concat('Microsoft.ContainerService/managedClusters/', parameters('clusterName'))).fqdn]"
+    }
+  }
+}
