@@ -1,0 +1,32 @@
+{
+    "$schema": "http://schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "name": {
+            "type": "string"
+        },
+        "sku": {
+            "type": "string"
+        }
+    },
+    "variables": {
+        "skuFamily": "[if(equals(parameters('sku'), 'Premium'), 'P', 'C')]"
+    },
+    "resources": [
+        {
+            "apiVersion": "2018-03-01",
+            "type": "Microsoft.Cache/Redis",
+            "name": "[parameters('name')]",
+            "location": "[resourceGroup().location]",
+            "properties": {
+                "sku": {
+                    "name": "[parameters('sku')]",
+                    "family": "[variables('skuFamily')]",
+                    "capacity": 1
+                },
+                "redisConfiguration": {},
+                "enableNonSslPort": true
+            }
+        }
+    ]
+}
