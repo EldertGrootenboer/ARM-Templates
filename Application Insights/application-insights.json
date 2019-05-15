@@ -1,0 +1,28 @@
+﻿{
+  "$schema": "http://schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "type": "string"
+    }
+  },
+  "variables": {
+    "requestSource": "rest",
+    "location": "[resourceGroup().location]",
+    "type": "other"
+  },
+  "resources": [
+    {
+      "name": "[parameters('name')]",
+      "type": "microsoft.insights/components",
+      "location": "[variables('location')]",
+      "apiVersion": "2015-05-01",
+      "properties": {
+        "ApplicationId": "[parameters('name')]",
+        "Application_Type": "[variables('type')]",
+        "Flow_Type": "Bluefield",
+        "Request_Source": "[variables('requestSource')]"
+      }
+    }
+  ]
+}
