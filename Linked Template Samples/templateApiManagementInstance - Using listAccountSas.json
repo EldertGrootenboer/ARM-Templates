@@ -38,7 +38,7 @@
         "userLogicAppsName": "LogicApps",
         "userLogicAppsFirstName": "Logic",
         "userLogicAppsLastName": "Apps",
-        "userLogicAppsEmail": "noreply@boskalis.com",
+        "userLogicAppsEmail": "noreply@company.com",
         "userLogicAppsNote": "Service user for Logic Apps.",
         "subscriptionLogicAppsName": "LogicApps",
         // Currently we need to calculate the expiry date ourselves, which is why we are better off using a PowerShell Task Group
