@@ -1,0 +1,68 @@
+﻿{
+  "$schema": "http://schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "name": {
+      "type": "string"
+    },
+    "sku": {
+      "type": "string",
+      "allowedValues": [
+        "Standard",
+        "standard",
+        "Premium",
+        "premium"
+      ]
+    },
+    "principalId": {
+      "type": "string"
+    }
+  },
+  "variables": {
+    "location": "[resourceGroup().location]",
+    "tenantId": "[subscription().tenantId]",
+    "enabledForDeployment": false,
+    "enabledForTemplateDeployment": true,
+    "enabledForDiskEncryption": false,
+    "networkAcls": {
+      "defaultAction": "Allow",
+      "bypass": "AzureServices",
+      "virtualNetworkRules": [],
+      "ipRules": []
+    },
+    "accessPolicies": [
+      {
+        "tenantId": "[subscription().tenantId]",
+        "objectId": "[parameters('principalId')]",
+        "permissions": {
+          "keys": [],
+          "secrets": [
+            "Get",
+            "List"
+          ],
+          "certificates": []
+        }
+      }
+    ]
+  },
+  "resources": [
+    {
+      "apiVersion": "2018-02-14",
+      "name": "[parameters('name')]",
+      "location": "[variables('location')]",
+      "type": "Microsoft.KeyVault/vaults",
+      "properties": {
+        "enabledForDeployment": "[variables('enabledForDeployment')]",
+        "enabledForTemplateDeployment": "[variables('enabledForTemplateDeployment')]",
+        "enabledForDiskEncryption": "[variables('enabledForDiskEncryption')]",
+        "accessPolicies": "[variables('accessPolicies')]",
+        "tenantId": "[variables('tenantId')]",
+        "sku": {
+          "name": "[parameters('sku')]",
+          "family": "A"
+        },
+        "networkAcls": "[variables('networkAcls')]"
+      }
+    }
+  ]
+}
