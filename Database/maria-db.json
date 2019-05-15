@@ -1,0 +1,62 @@
+﻿{
+  "$schema": "http://schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "administratorLogin": {
+      "type": "string"
+    },
+    "administratorLoginPassword": {
+      "type": "securestring"
+    },
+    "serverName": {
+      "type": "string"
+    },
+    "skuCapacity": {
+      "type": "int"
+    },
+    "skuSizeMB": {
+      "type": "int"
+    },
+    "skuTier": {
+      "type": "string"
+    },
+    "backupRetentionDays": {
+      "type": "int"
+    },
+    "geoRedundantBackup": {
+      "type": "string"
+    }
+  },
+  "variables": {
+    "location": "[resourceGroup().location]",
+    "version": "10.2",
+    "skuFamily": "Gen5",
+    "skuName": "GP_Gen5_2"
+  },
+  "resources": [
+    {
+      "apiVersion": "2018-06-01-preview",
+      "type": "Microsoft.DBforMariaDB/servers",
+      "kind": "",
+      "location": "[variables('location')]",
+      "name": "[parameters('serverName')]",
+      "properties": {
+        "version": "[variables('version')]",
+        "administratorLogin": "[parameters('administratorLogin')]",
+        "administratorLoginPassword": "[parameters('administratorLoginPassword')]",
+        "storageProfile": {
+          "storageMB": "[parameters('skuSizeMB')]",
+          "backupRetentionDays": "[parameters('backupRetentionDays')]",
+          "geoRedundantBackup": "[parameters('geoRedundantBackup')]"
+        }
+      },
+      "sku": {
+        "name": "[variables('skuName')]",
+        "tier": "[parameters('skuTier')]",
+        "capacity": "[parameters('skuCapacity')]",
+        "size": "[parameters('skuSizeMB')]",
+        "family": "[variables('skuFamily')]"
+      }
+    }
+  ]
+}

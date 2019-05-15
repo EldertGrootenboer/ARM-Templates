@@ -1,0 +1,97 @@
+﻿{
+  "$schema": "http://schema.management.azure.com/schemas/2014-04-01-preview/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "serverName": {
+      "type": "string"
+    },
+    "administratorLogin": {
+      "type": "string"
+    },
+    "administratorLoginPassword": {
+      "type": "securestring"
+    },
+    "allowAzureIps": {
+      "type": "bool"
+    },
+    "storage_uri": {
+      "type": "string"
+    },
+    "storage_sas_token": {
+      "type": "string"
+    }
+  },
+  "variables": {
+    "location": "[resourceGroup().location]",
+    "enableATP": false
+  },
+  "resources": [
+    {
+      "apiVersion": "2015-05-01-preview",
+      "type": "Microsoft.Sql/servers",
+      "name": "[parameters('serverName')]",
+      "location": "[variables('location')]",
+      "properties": {
+        "administratorLogin": "[parameters('administratorLogin')]",
+        "administratorLoginPassword": "[parameters('administratorLoginPassword')]",
+        "version": "12.0"
+      },
+      "resources": [
+        {
+          "condition": "[parameters('allowAzureIps')]",
+          "apiVersion": "2017-05-10",
+          "type": "Microsoft.Resources/deployments",
+          "name": "AllowAllWindowsAzureIps",
+          "properties": {
+            "mode": "Incremental",
+            "templateLink": {
+              "uri": "[concat(parameters('storage_uri'), '/DatabaseServer/Resources/firewallRule.json', parameters('storage_sas_token'))]",
+              "contentVersion": "1.0.0.0"
+            },
+            "parameters": {
+              "serverName": {
+                "value": "[parameters('serverName')]"
+              },
+              "ruleName": {
+                "value": "AllowAllWindowsAzureIps"
+              },
+              "startIpAddress": {
+                "value": "0.0.0.0"
+              },
+              "endIpAddress": {
+                "value": "0.0.0.0"
+              },
+              "location": {
+                "value": "[variables('location')]"
+              }
+            }
+          },
+          "dependsOn": [
+            "[concat('Microsoft.Sql/servers/', parameters('serverName'))]"
+          ]
+        },
+        {
+          "condition": "[variables('enableATP')]",
+          "apiVersion": "2017-05-10",
+          "type": "Microsoft.Resources/deployments",
+          "name": "DefaultPolicyRule",
+          "properties": {
+            "mode": "Incremental",
+            "templateLink": {
+              "uri": "[concat(parameters('storage_uri'), '/DatabaseServer/Resources/securityAlertPolicy.json', parameters('storage_sas_token'))]",
+              "contentVersion": "1.0.0.0"
+            },
+            "parameters": {
+              "policyName": {
+                "value": "Default"
+              }
+            }
+          },
+          "dependsOn": [
+            "[concat('Microsoft.Sql/servers/', parameters('serverName'))]"
+          ]
+        }
+      ]
+    }
+  ]
+}
