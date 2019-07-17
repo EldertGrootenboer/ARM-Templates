@@ -6,16 +6,7 @@
       "type": "string"
     },
     "sku": {
-      "type": "string",
-      "allowedValues": [
-        "Free",
-        "Standard",
-        "Premium",
-        "Unlimited",
-        "PerNode",
-        "PerGB2018",
-        "Standalone"
-      ]
+      "type": "string"
     },
     "retentionInDays": {
       "type": "int"
