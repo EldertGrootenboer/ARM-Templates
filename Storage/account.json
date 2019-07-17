@@ -29,6 +29,5 @@
             },
             "kind": "[variables('kind')]"
         }
-    ],
-    "outputs": {}
+    ]
 }
