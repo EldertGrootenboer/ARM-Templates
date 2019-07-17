@@ -1,0 +1,43 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01-preview/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "keyVaultName": {
+            "type": "string"
+        },
+        "objectResourceGroup": {
+            "type": "string"
+        },
+        "objectName": {
+            "type": "string"
+        },
+        "objectType": {
+            "type": "string"
+        },
+        "permissions": {
+            "type": "object",
+            "defaultValue": null
+        }
+    },
+    "variables": {
+        "objectIdentityResourceId": "[concat(resourceId(parameters('objectResourceGroup'), parameters('objectType'), parameters('objectName')),'/providers/Microsoft.ManagedIdentity/Identities/default')]",
+        "defaultPermissions": {},
+        "permissions": "[if(empty(parameters('permissions')), variables('defaultPermissions'), parameters('permissions'))]"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.KeyVault/vaults/accessPolicies",
+            "name": "[concat(parameters('keyVaultName'), '/add')]",
+            "apiVersion": "2018-02-14",
+            "properties": {
+                "accessPolicies": [
+                    {
+                        "tenantId": "[reference(variables('objectIdentityResourceId'), '2015-08-31-PREVIEW').tenantId]",
+                        "objectId": "[reference(variables('objectIdentityResourceId'), '2015-08-31-PREVIEW').principalId]",
+                        "permissions": "[variables('permissions')]"
+                    }
+                ]
+            }
+        }
+    ]
+}
