@@ -12,7 +12,7 @@
             "type": "string"
         },
         "customAppSettings": {
-            "type": "array"
+            "type": "object"
         }
     },
     "variables": {
