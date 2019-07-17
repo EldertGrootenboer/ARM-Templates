@@ -32,7 +32,7 @@
     },
     "accessPolicies": [
       {
-        "tenantId": "[subscription().tenantId]",
+        "tenantId": "[variables('tenantId')]",
         "objectId": "[parameters('principalId')]",
         "permissions": {
           "keys": [],
