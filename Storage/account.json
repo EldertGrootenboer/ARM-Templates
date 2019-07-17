@@ -7,7 +7,7 @@
         }
     },
     "variables": {
-        "kind": "BlobStorage",
+        "kind": "StorageV2",
         "accessTier": "Hot",
         "supportsHttpsTrafficOnly": true,
         "accountType": "Standard_LRS",
