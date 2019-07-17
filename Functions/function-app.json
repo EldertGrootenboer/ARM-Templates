@@ -13,6 +13,9 @@
         },
         "customAppSettings": {
             "type": "object"
+        },
+        "tags": {
+            "type": "object"
         }
     },
     "variables": {
@@ -26,6 +29,7 @@
             "apiVersion": "2018-02-01",
             "name": "[parameters('functionAppName')]",
             "location": "[variables('location')]",
+            "tags": "[parameters('tags')]",
             "sku": {
                 "name": "Y1",
                 "tier": "Dynamic"
@@ -40,6 +44,7 @@
             "type": "Microsoft.Web/sites",
             "name": "[parameters('functionAppName')]",
             "location": "[variables('location')]",
+            "tags": "[parameters('tags')]",
             "identity": {
                 "type": "SystemAssigned"
             },

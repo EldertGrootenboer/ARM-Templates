@@ -7,6 +7,9 @@
         },
         "defaultExperience": {
             "type": "string"
+        },
+        "tags": {
+            "type": "object"
         }
     },
     "variables": {},
@@ -17,6 +20,7 @@
             "type": "Microsoft.DocumentDb/databaseAccounts",
             "name": "[parameters('name')]",
             "location": "[resourceGroup().location]",
+            "tags": "[parameters('tags')]",
             "properties": {
                 "databaseAccountOfferType": "Standard",
                 "locations": [

@@ -25,6 +25,9 @@
     },
     "geoRedundantBackup": {
       "type": "string"
+    },
+    "tags": {
+      "type": "object"
     }
   },
   "variables": {
@@ -40,6 +43,7 @@
       "kind": "",
       "location": "[variables('location')]",
       "name": "[parameters('serverName')]",
+      "tags": "[parameters('tags')]",
       "properties": {
         "version": "[variables('version')]",
         "administratorLogin": "[parameters('administratorLogin')]",

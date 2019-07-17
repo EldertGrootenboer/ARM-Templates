@@ -4,6 +4,9 @@
     "parameters": {
         "storageAccountName": {
             "type": "string"
+        },
+        "tags": {
+            "type": "object"
         }
     },
     "variables": {
@@ -19,6 +22,7 @@
             "type": "Microsoft.Storage/storageAccounts",
             "apiVersion": "[variables('apiVersion')]",
             "location": "[resourcegroup().location]",
+            "tags": "[parameters('tags')]",
             "properties": {
                 "accessTier": "[variables('accessTier')]",
                 "supportsHttpsTrafficOnly": "[variables('supportsHttpsTrafficOnly')]"

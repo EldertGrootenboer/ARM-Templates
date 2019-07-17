@@ -7,6 +7,9 @@
     },
     "location": {
       "type": "string"
+    },
+    "tags": {
+      "type": "object"
     }
   },
   "variables": {},
@@ -16,6 +19,7 @@
       "type": "Microsoft.OperationsManagement/solutions",
       "location": "[parameters('location')]",
       "name": "[concat('ContainerInsights', '(', split(parameters('omsWorkspaceId'),'/')[8], ')')]",
+      "tags": "[parameters('tags')]",
       "properties": {
         "workspaceResourceId": "[parameters('omsWorkspaceId')]"
       },

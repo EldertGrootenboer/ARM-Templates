@@ -10,6 +10,9 @@
     },
     "retentionInDays": {
       "type": "int"
+    },
+    "tags": {
+      "type": "object"
     }
   },
   "variables": {
@@ -21,6 +24,7 @@
       "name": "[parameters('workspaceName')]",
       "apiVersion": "2015-11-01-preview",
       "location": "[variables('location')]",
+      "tags": "[parameters('tags')]",
       "properties": {
         "sku": {
           "name": "[parameters('sku')]"

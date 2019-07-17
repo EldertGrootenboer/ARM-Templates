@@ -58,9 +58,10 @@
     },
     "dockerBridgeCidr": {
       "type": "string"
+    },
+    "tags": {
+      "type": "object"
     }
-  },
-  "variables": {
   },
   "resources": [
     {
@@ -68,6 +69,7 @@
       "type": "Microsoft.ContainerService/managedClusters",
       "location": "[parameters('location')]",
       "name": "[parameters('clusterName')]",
+      "tags": "[parameters('tags')]",
       "properties": {
         "enableRBAC": "[parameters('enableRBAC')]",
         "dnsPrefix": "[parameters('dnsPrefix')]",
@@ -104,8 +106,7 @@
           "dnsServiceIP": "[parameters('dnsServiceIP')]",
           "dockerBridgeCidr": "[parameters('dockerBridgeCidr')]"
         }
-      },
-      "tags": {}
+      }
     }
   ],
   "outputs": {

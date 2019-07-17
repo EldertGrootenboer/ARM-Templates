@@ -19,6 +19,9 @@
     },
     "storage_sas_token": {
       "type": "string"
+    },
+    "tags": {
+      "type": "object"
     }
   },
   "variables": {
@@ -31,6 +34,7 @@
       "type": "Microsoft.Sql/servers",
       "name": "[parameters('serverName')]",
       "location": "[variables('location')]",
+      "tags": "[parameters('tags')]",
       "properties": {
         "administratorLogin": "[parameters('administratorLogin')]",
         "administratorLoginPassword": "[parameters('administratorLoginPassword')]",

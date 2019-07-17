@@ -16,6 +16,9 @@
     },
     "principalId": {
       "type": "string"
+    },
+    "tags": {
+      "type": "object"
     }
   },
   "variables": {
@@ -51,6 +54,7 @@
       "name": "[parameters('name')]",
       "location": "[variables('location')]",
       "type": "Microsoft.KeyVault/vaults",
+      "tags": "[parameters('tags')]",
       "properties": {
         "enabledForDeployment": "[variables('enabledForDeployment')]",
         "enabledForTemplateDeployment": "[variables('enabledForTemplateDeployment')]",

@@ -4,6 +4,9 @@
   "parameters": {
     "name": {
       "type": "string"
+    },
+    "tags": {
+      "type": "object"
     }
   },
   "variables": {
@@ -17,6 +20,7 @@
       "type": "microsoft.insights/components",
       "location": "[variables('location')]",
       "apiVersion": "2015-05-01",
+      "tags": "[parameters('tags')]",
       "properties": {
         "ApplicationId": "[parameters('name')]",
         "Application_Type": "[variables('type')]",

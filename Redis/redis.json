@@ -7,6 +7,9 @@
         },
         "sku": {
             "type": "string"
+        },
+        "tags": {
+            "type": "object"
         }
     },
     "variables": {
@@ -18,6 +21,7 @@
             "type": "Microsoft.Cache/Redis",
             "name": "[parameters('name')]",
             "location": "[resourceGroup().location]",
+            "tags": "[parameters('tags')]",
             "properties": {
                 "sku": {
                     "name": "[parameters('sku')]",
