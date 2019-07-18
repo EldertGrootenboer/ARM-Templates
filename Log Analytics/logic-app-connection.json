@@ -18,7 +18,7 @@
     "resources": [
         {
             "type": "Microsoft.Logic/workflows/providers/diagnosticSettings",
-            "name": "[concat(parameters('logicAppName'), 'Microsoft.Insights/', parameters('diagnosticName'))]",
+            "name": "[concat(parameters('logicAppName'), '/Microsoft.Insights/', parameters('diagnosticName'))]",
             "apiVersion": "2017-05-01-preview",
             "properties": {
                 "name": "[parameters('workspaceName')]",
