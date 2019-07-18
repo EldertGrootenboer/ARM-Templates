@@ -21,8 +21,17 @@
         "sshHostKeyFingerprint": {
             "type": "string"
         },
+        "sshPrivateKey": {
+            "type": "securestring"
+        },
+        "sshPrivateKeyPassphrase": {
+            "type": "securestring"
+        },
         "userName": {
             "type": "string"
+        },
+        "password": {
+            "type": "securestring"
         },
         "tags": {
             "type": "object"
@@ -49,7 +58,10 @@
                     "hostName": "[parameters('hostName')]",
                     "portNumber": "[parameters('portNumber')]",
                     "sshHostKeyFingerprint": "[parameters('sshHostKeyFingerprint')]",
-                    "userName": "[parameters('userName')]"
+                    "sshPrivateKey": "[parameters('sshPrivateKey')]",
+                    "sshPrivateKeyPassphrase": "[parameters('sshPrivateKeyPassphrase')]",
+                    "userName": "[parameters('userName')]",
+                    "password": "[parameters('password')]"
                 },
                 "testLinks": [
                   {
