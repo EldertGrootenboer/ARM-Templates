@@ -16,7 +16,6 @@
             "type": "object"
         }
     },
-    "variables": {},
     "resources": [
         {
             "type": "Microsoft.Web/connections",
@@ -24,18 +23,15 @@
             "apiVersion": "2016-06-01",
             "location": "[resourcegroup().location]",
             "tags": "[parameters('tags')]",
-            "scale": null,
             "properties": {
                 "displayName": "[parameters('connectionDisplayName')]",
-                "customParameterValues": {},
                 "api": {
                     "id": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Web/locations/', resourcegroup().location, '/managedApis/', parameters('connectionName'))]"
                 },
                 "parameterValues": {
                     "connectionString": "[parameters('connectionString')]"
                 }
-            },
-            "dependsOn": []
+            }
         }
     ]
 }
