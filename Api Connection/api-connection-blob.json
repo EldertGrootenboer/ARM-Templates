@@ -16,12 +16,16 @@
             "type": "object"
         }
     },
+    "variables": {
+        "location": "[resourceGroup().location]",
+        "storageAccountid": "[concat(resourceGroup().id,'/providers/','Microsoft.Storage/storageAccounts/', parameters('storageAccountName'))]"
+    },
     "resources": [
         {
             "type": "Microsoft.Web/connections",
             "name": "[parameters('connectionName')]",
             "apiVersion": "2016-06-01",
-            "location": "[resourcegroup().location]",
+            "location": "[variables('location')]",
             "tags": "[parameters('tags')]",
             "properties": {
                 "displayName": "[parameters('connectionDisplayName')]",
@@ -29,7 +33,8 @@
                     "id": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Web/locations/', resourcegroup().location, '/managedApis/', parameters('connectionName'))]"
                 },
                 "parameterValues": {
-                    "accountName": "[parameters('storageAccountName')]"
+                    "accountName": "[parameters('storageAccountName')]",
+                    "accessKey": "[concat('DefaultEndpointsProtocol=https;AccountName=', parameters('storageAccountName'), ';AccountKey=', listKeys(variables('storageAccountid'),'2015-05-01-preview').key1)]"
                 },
                 "testLinks": [
                   {
