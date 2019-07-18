@@ -1,0 +1,63 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "connectionName": {
+            "defaultValue": "sftp",
+            "type": "string"
+        },
+        "connectionDisplayName": {
+            "type": "string"
+        },
+        "giveUpSecurityAndAcceptAnySshHostKey": {
+            "type": "bool"
+        },
+        "hostName": {
+            "type": "string"
+        },
+        "portNumber": {
+            "type": "int"
+        },
+        "sshHostKeyFingerprint": {
+            "type": "string"
+        },
+        "userName": {
+            "type": "string"
+        },
+        "tags": {
+            "type": "object"
+        }
+    },
+    "variables": {
+        "disableUploadFilesResumeCapability": false
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Web/connections",
+            "name": "[parameters('connectionName')]",
+            "apiVersion": "2016-06-01",
+            "location": "[resourcegroup().location]",
+            "tags": "[parameters('tags')]",
+            "properties": {
+                "displayName": "[parameters('connectionDisplayName')]",
+                "api": {
+                    "id": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Web/locations/', resourcegroup().location, '/managedApis/', parameters('connectionName'))]"
+                },
+                "parameterValues": {
+                    "disableUploadFilesResumeCapability": "[variables('disableUploadFilesResumeCapability')]",
+                    "giveUpSecurityAndAcceptAnySshHostKey": "[parameters('giveUpSecurityAndAcceptAnySshHostKey')]",
+                    "hostName": "[parameters('hostName')]",
+                    "portNumber": "[parameters('portNumber')]",
+                    "sshHostKeyFingerprint": "[parameters('sshHostKeyFingerprint')]",
+                    "userName": "[parameters('userName')]"
+                },
+                "testLinks": [
+                  {
+                    "requestUri": "[concat('https://management.azure.com:443/subscriptions/', subscription().subscriptionId, '/resourceGroups/', resourceGroup().name, '/providers/Microsoft.Web/connections/', parameters('connectionName'), '/extensions/proxy/datasets/default/folders?api-version=2018-07-01-preview')]",
+                    "method": "get"
+                  }
+                ]
+            }
+        }
+    ]
+}
