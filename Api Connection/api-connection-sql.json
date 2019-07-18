@@ -33,12 +33,15 @@
             "type": "securestring"
         }
     },
+    "variables": {
+        "location": "[resourceGroup().location]"
+    },
     "resources": [
         {
             "type": "Microsoft.Web/connections",
             "name": "[parameters('connectionName')]",
             "apiVersion": "2016-06-01",
-            "location": "[resourcegroup().location]",
+            "location": "[variables('location')]",
             "tags": "[parameters('tags')]",
             "properties": {
                 "displayName": "[parameters('connectionDisplayName')]",
