@@ -25,15 +25,25 @@
         },
         "request": {
             "type": "object"
+        },
+        "response": {
+            "type": "object",
+            "defaultValue": {}
         }
     },
     "variables": {
-        "responses": [
+        "defaultResponse": [
             {
                 "statusCode": 200,
-                "description": "OK"
+                "description": "OK",
+                "representations": [
+                    {
+                        "contentType": "application/json"
+                    }
+                ]
             }
-        ]
+        ],
+        "response": "[if(empty(parameters('response')), variables('defaultResponse'), parameters('response'))]"
     },
     "resources": [
         {
@@ -46,7 +56,7 @@
                 "urlTemplate": "[parameters('urlTemplate')]",
                 "description": "[parameters('description')]",
                 "request": "[parameters('request')]",
-                "responses": "[variables('responses')]"
+                "responses": "[variables('response')]"
             }
         }
     ]
