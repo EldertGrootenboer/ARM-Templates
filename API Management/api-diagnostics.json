@@ -2,10 +2,14 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "apiManagementInstanceName": {
-            "type": "string"
+        "diagnosticsName": {
+            "type": "string",
+            "allowedValues": [
+                "applicationinsights",
+                "azuremonitor"
+            ]
         },
-        "name": {
+        "apiManagementInstanceName": {
             "type": "string"
         },
         "apiName": {
@@ -18,7 +22,7 @@
     "resources": [
         {
             "type": "Microsoft.ApiManagement/service/apis/diagnostics",
-            "name": "[concat(parameters('apiManagementInstanceName'), '/', parameters('apiName'), '/', parameters('name'))]",
+            "name": "[concat(parameters('apiManagementInstanceName'), '/', parameters('apiName'), '/', parameters('diagnosticsName'))]",
             "apiVersion": "2018-06-01-preview",
             "properties": {
                 "alwaysLog": "allErrors",
