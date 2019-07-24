@@ -11,45 +11,32 @@
                 "description": "The principal to assign the role to."
             }
         },
-        "builtInRoleType": {
-            "type": "string",
-            "allowedValues": [
-                "Owner",
-                "Contributor",
-                "Reader",
-                "StorageBlobDataOwner",
-                "StorageBlobDataContributor",
-                "StorageBlobDataReader"
-            ],
-            "metadata": {
-                "description": "Built-in role to assign."
-            }
-        },
         "roleNameGuid": {
             "type": "string",
             "metadata": {
                 "description": "A new GUID used to identify the role assignment."
             }
+        },
+        "builtInRoleType": {
+            "type": "string",
+            "metadata": {
+                "description": "Built-in role to assign."
+            }
         }
     },
     "variables": {
-        "kind": "StorageV2",
-        "accessTier": "Hot",
-        "supportsHttpsTrafficOnly": true,
-        "accountType": "Standard_LRS",
-        "apiVersionStorageAccount": "2018-02-01",
-        "apiVersionRoleAssignments": "2018-09-01-preview"
+        "apiVersion": "2018-09-01-preview"
     },
     "resources": [
         {
             "type": "Microsoft.Storage/storageAccounts/providers/roleAssignments",
-            "apiVersion": "[variables('apiVersionRoleAssignments')]",
+            "apiVersion": "[variables('apiVersion')]",
             "name": "[concat(parameters('storageAccountName'), '/Microsoft.Authorization/', parameters('roleNameGuid'))]",
             "dependsOn": [
                 "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]"
             ],
             "properties": {
-                "roleDefinitionId": "[variables(parameters('builtInRoleType'))]",
+                "roleDefinitionId": "[parameters('builtInRoleType')]",
                 "principalId": "[parameters('principalGuid')]",
                 "mode":"Incremental"
             }
