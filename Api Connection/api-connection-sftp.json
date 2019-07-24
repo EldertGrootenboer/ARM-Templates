@@ -38,14 +38,15 @@
         }
     },
     "variables": {
-        "disableUploadFilesResumeCapability": false,
-        "location": "[resourceGroup().location]"
+        "location": "[resourceGroup().location]",
+        "apiVersion": "2016-06-01",
+        "disableUploadFilesResumeCapability": false
     },
     "resources": [
         {
             "type": "Microsoft.Web/connections",
             "name": "[parameters('connectionName')]",
-            "apiVersion": "2016-06-01",
+            "apiVersion": "[variables('apiVersion')]",
             "location": "[variables('location')]",
             "tags": "[parameters('tags')]",
             "properties": {
@@ -65,10 +66,10 @@
                     "password": "[parameters('password')]"
                 },
                 "testLinks": [
-                  {
-                    "requestUri": "[concat('https://management.azure.com:443/subscriptions/', subscription().subscriptionId, '/resourceGroups/', resourceGroup().name, '/providers/Microsoft.Web/connections/', parameters('connectionName'), '/extensions/proxy/datasets/default/folders?api-version=2018-07-01-preview')]",
-                    "method": "get"
-                  }
+                    {
+                        "requestUri": "[concat('https://management.azure.com:443/subscriptions/', subscription().subscriptionId, '/resourceGroups/', resourceGroup().name, '/providers/Microsoft.Web/connections/', parameters('connectionName'), '/extensions/proxy/datasets/default/folders?api-version=2018-07-01-preview')]",
+                        "method": "get"
+                    }
                 ]
             }
         }

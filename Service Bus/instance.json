@@ -21,11 +21,14 @@
             "defaultValue": false
         }
     },
+    "variables": {
+        "apiVersion": "2018-01-01-preview"
+    },
     "resources": [
         {
             "name": "[parameters('name')]",
             "type": "Microsoft.ServiceBus/namespaces",
-            "apiVersion": "2018-01-01-preview",
+            "apiVersion": "[variables('apiVersion')]",
             "sku": {
                 "name": "[parameters('sku')]",
                 "tier": "[parameters('sku')]",

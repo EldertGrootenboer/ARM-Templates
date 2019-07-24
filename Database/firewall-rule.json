@@ -19,10 +19,11 @@
     }
   },
   "variables": {
+    "apiVersion": "2015-05-01-preview"
   },
   "resources": [
     {
-      "apiVersion": "2015-05-01-preview",
+      "apiVersion": "[variables('apiVersion')]",
       "type": "Microsoft.Sql/servers/firewallrules",
       "name": "[concat(parameters('serverName'), '/', parameters('ruleName'))]",
       "location": "[parameters('location')]",
@@ -31,7 +32,5 @@
         "startIpAddress": "[parameters('endIpAddress')]"
       }
     }
-  ],
-  "outputs": {
-  }
+  ]
 }

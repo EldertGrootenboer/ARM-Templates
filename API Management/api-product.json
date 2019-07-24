@@ -18,11 +18,14 @@
             "type": "string"
         }
     },
+    "variables": {
+        "apiVersion": "2018-01-01"
+    },
     "resources": [
         {
             "type": "Microsoft.ApiManagement/service/products",
             "name": "[concat(parameters('apiManagementInstanceName'), '/', parameters('productName'))]",
-            "apiVersion": "2018-01-01",
+            "apiVersion": "[variables('apiVersion')]",
             "properties": {
                 "displayName": "[parameters('displayName')]",
                 "description": "[parameters('description')]",
@@ -32,7 +35,7 @@
         {
             "type": "Microsoft.ApiManagement/service/products/apis",
             "name": "[concat(parameters('apiManagementInstanceName'), '/', parameters('productName'), '/', parameters('apiName'))]",
-            "apiVersion": "2018-01-01",
+            "apiVersion": "[variables('apiVersion')]",
             "dependsOn": [
                 "[resourceId('Microsoft.ApiManagement/service/products', parameters('apiManagementInstanceName'), parameters('productName'))]"
             ]

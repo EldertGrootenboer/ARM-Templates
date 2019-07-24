@@ -19,6 +19,7 @@
     },
     "variables": {
         "location": "Global",
+        "apiVersion": "2018-03-01",
         "emailReceiverName": "[concat('emailReceiver', parameters('actionGroupName'))]",
         "logicAppReceiverName": "[concat('logicAppReceiver', parameters('actionGroupName'))]",
         "logicAppResourceId": "[if(empty(parameters('logicAppName')), '', resourceId('Microsoft.Logic/workflows', parameters('logicAppName')))]",
@@ -43,7 +44,7 @@
     "resources": [
         {
             "type": "Microsoft.Insights/actionGroups",
-            "apiVersion": "2018-03-01",
+            "apiVersion": "[variables('apiVersion')]",
             "name": "[parameters('actionGroupName')]",
             "location": "[variables('location')]",
             "tags": "[parameters('tags')]",

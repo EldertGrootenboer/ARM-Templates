@@ -26,11 +26,12 @@
   },
   "variables": {
     "location": "[resourceGroup().location]",
+    "apiVersion": "2017-10-01-preview",
     "enableATP": false
   },
   "resources": [
     {
-      "apiVersion": "2015-05-01-preview",
+      "apiVersion": "[variables('apiVersion')]",
       "type": "Microsoft.Sql/servers",
       "name": "[parameters('serverName')]",
       "location": "[variables('location')]",

@@ -15,11 +15,14 @@
             "type": "string"
         }
     },
+    "variables": {
+        "apiVersion": "2018-06-01-preview"
+    },
     "resources": [
         {
             "type": "Microsoft.ApiManagement/service/subscriptions",
             "name": "[concat(parameters('apiManagementInstanceName'), '/', parameters('name'))]",
-            "apiVersion": "2018-06-01-preview",
+            "apiVersion": "[variables('apiVersion')]",
             "properties": {
                 "ownerId": "[resourceId('Microsoft.ApiManagement/service/users', parameters('apiManagementInstanceName'), parameters('userName'))]",
                 "scope": "[concat('/subscriptions/', subscription().subscriptionId ,'/resourceGroups/', resourceGroup().name,'/providers/Microsoft.ApiManagement/service/', parameters('apiManagementInstanceName'), '/apis')]",

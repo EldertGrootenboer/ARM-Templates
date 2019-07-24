@@ -127,6 +127,7 @@
   },
   "variables": {
     "location": "[resourceGroup().location]",
+    "apiVersion": "2017-05-10",
     "networkPlugin": "azure",
     "enableOmsAgent": true,
     "omsWorkspaceId": "[resourceId(parameters('workspaceResourcegroupName'), 'Microsoft.OperationalInsights/workspaces', parameters('workspaceName'))]",
@@ -135,7 +136,7 @@
   },
   "resources": [
     {
-      "apiVersion": "2017-05-10",
+      "apiVersion": "[variables('apiVersion')]",
       "dependsOn": [
         "[concat(parameters('resourceName'), '_SubnetRoleAssignment')]"
       ],
@@ -209,7 +210,7 @@
       }
     },
     {
-      "apiVersion": "2017-05-10",
+      "apiVersion": "[variables('apiVersion')]",
       "dependsOn": [],
       "type": "Microsoft.Resources/deployments",
       "name": "[concat(parameters('resourceName'), '_OmsSolutionDeployment')]",
@@ -232,7 +233,7 @@
       }
     },
     {
-      "apiVersion": "2017-05-10",
+      "apiVersion": "[variables('apiVersion')]",
       "dependsOn": [],
       "type": "Microsoft.Resources/deployments",
       "name": "[concat(parameters('resourceName'), '_SubnetRoleAssignment')]",

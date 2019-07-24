@@ -23,6 +23,7 @@
   },
   "variables": {
     "location": "[resourceGroup().location]",
+    "apiVersion": "2018-02-14",
     "tenantId": "[subscription().tenantId]",
     "enabledForDeployment": false,
     "enabledForTemplateDeployment": true,
@@ -50,7 +51,7 @@
   },
   "resources": [
     {
-      "apiVersion": "2018-02-14",
+      "apiVersion": "[variables('apiVersion')]",
       "name": "[parameters('name')]",
       "location": "[variables('location')]",
       "type": "Microsoft.KeyVault/vaults",

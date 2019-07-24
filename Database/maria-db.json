@@ -32,13 +32,14 @@
   },
   "variables": {
     "location": "[resourceGroup().location]",
+    "apiVersion": "2018-06-01-preview",
     "version": "10.2",
     "skuFamily": "Gen5",
     "skuName": "GP_Gen5_2"
   },
   "resources": [
     {
-      "apiVersion": "2018-06-01-preview",
+      "apiVersion": "[variables('apiVersion')]",
       "type": "Microsoft.DBforMariaDB/servers",
       "kind": "",
       "location": "[variables('location')]",

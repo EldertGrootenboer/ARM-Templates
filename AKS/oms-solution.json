@@ -12,10 +12,12 @@
       "type": "object"
     }
   },
-  "variables": {},
+  "variables": {
+    "apiVersion": "2015-11-01-preview"
+  },
   "resources": [
     {
-      "apiVersion": "2015-11-01-preview",
+      "apiVersion": "[variables('apiVersion')]",
       "type": "Microsoft.OperationsManagement/solutions",
       "location": "[parameters('location')]",
       "name": "[concat('ContainerInsights', '(', split(parameters('omsWorkspaceId'),'/')[8], ')')]",

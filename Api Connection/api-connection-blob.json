@@ -18,13 +18,14 @@
     },
     "variables": {
         "location": "[resourceGroup().location]",
+        "apiVersion": "2016-06-01",
         "storageAccountid": "[concat(resourceGroup().id,'/providers/','Microsoft.Storage/storageAccounts/', parameters('storageAccountName'))]"
     },
     "resources": [
         {
             "type": "Microsoft.Web/connections",
             "name": "[parameters('connectionName')]",
-            "apiVersion": "2016-06-01",
+            "apiVersion": "[variables('apiVersion')]",
             "location": "[variables('location')]",
             "tags": "[parameters('tags')]",
             "properties": {
@@ -37,10 +38,10 @@
                     "accessKey": "[concat('DefaultEndpointsProtocol=https;AccountName=', parameters('storageAccountName'), ';AccountKey=', listKeys(variables('storageAccountid'),'2015-05-01-preview').key1)]"
                 },
                 "testLinks": [
-                  {
-                    "requestUri": "[concat('https://management.azure.com:443/subscriptions/', subscription().subscriptionId, '/resourceGroups/', resourceGroup().name, '/providers/Microsoft.Web/connections/', parameters('connectionName'), '/extensions/proxy/testconnection?api-version=2018-07-01-preview')]",
-                    "method": "get"
-                  }
+                    {
+                        "requestUri": "[concat('https://management.azure.com:443/subscriptions/', subscription().subscriptionId, '/resourceGroups/', resourceGroup().name, '/providers/Microsoft.Web/connections/', parameters('connectionName'), '/extensions/proxy/testconnection?api-version=2018-07-01-preview')]",
+                        "method": "get"
+                    }
                 ]
             }
         }

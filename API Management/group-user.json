@@ -12,11 +12,14 @@
             "type": "string"
         }
     },
+    "variables": {
+        "apiVersion": "2017-03-01"
+    },
     "resources": [
         {
             "type": "Microsoft.ApiManagement/service/groups/users",
             "name": "[concat(parameters('apiManagementInstanceName'), '/', parameters('groupName'), '/', parameters('userName'))]",
-            "apiVersion": "2017-03-01"
+            "apiVersion": "[variables('apiVersion')]"
         }
     ]
 }

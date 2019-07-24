@@ -1,25 +1,28 @@
 {
-    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
-    "contentVersion": "1.0.0.0",
-    "parameters": {
-        "apiManagementInstanceName": {
-          "type": "string"
-        },
-        "productName": {
-          "type": "string"
-        },
-        "policyContent": {
-          "type": "string"
-        }
+  "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "apiManagementInstanceName": {
+      "type": "string"
     },
-    "resources": [
-        {
-            "type": "Microsoft.ApiManagement/service/products/policies",
-            "name": "[concat(parameters('apiManagementInstanceName'), '/', parameters('productName'), '/policy')]",
-            "apiVersion": "2018-01-01",
-            "properties": {
-                "policyContent": "[parameters('policyContent')]"
-            }
-        }
-    ]
-  }
+    "productName": {
+      "type": "string"
+    },
+    "policyContent": {
+      "type": "string"
+    }
+  },
+  "variables": {
+    "apiVersion": "2018-01-01"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.ApiManagement/service/products/policies",
+      "name": "[concat(parameters('apiManagementInstanceName'), '/', parameters('productName'), '/policy')]",
+      "apiVersion": "[variables('apiVersion')]",
+      "properties": {
+        "policyContent": "[parameters('policyContent')]"
+      }
+    }
+  ]
+}

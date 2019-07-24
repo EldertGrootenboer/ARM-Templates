@@ -13,8 +13,9 @@
         }
     },
     "variables": {
-        "alertName": "[concat(parameters('logicAppName'), ' - Run Throttled Events greater than dynamic thresholds')]",
         "location": "global",
+        "apiVersion": "2018-03-01",
+        "alertName": "[concat(parameters('logicAppName'), ' - Run Throttled Events greater than dynamic thresholds')]",
         "description": "",
         "severity": 3,
         "evaluationFrequency": "PT1M",
@@ -32,7 +33,7 @@
         {
             "name": "[variables('alertName')]",
             "type": "Microsoft.Insights/metricAlerts",
-            "apiVersion": "2018-03-01",
+            "apiVersion": "[variables('apiVersion')]",
             "location": "[variables('location')]",
             "tags": "[parameters('tags')]",
             "properties": {

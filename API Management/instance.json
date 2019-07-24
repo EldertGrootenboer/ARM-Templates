@@ -21,9 +21,12 @@
             "type": "int"
         }
     },
+    "variables": {
+        "apiVersion": "2018-06-01-preview"
+    },
     "resources": [
         {
-            "apiVersion": "2018-06-01-preview",
+            "apiVersion": "[variables('apiVersion')]",
             "name": "[parameters('name')]",
             "location": "[resourceGroup().location]",
             "tags": "[parameters('tags')]",

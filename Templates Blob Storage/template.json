@@ -12,11 +12,14 @@
             "type": "string"
         }
     },
+    "variables": {
+        "apiVersion": "2018-07-01"
+    },
     "resources": [
         {
             "name": "[parameters('storageAccountName')]",
             "type": "Microsoft.Storage/storageAccounts",
-            "apiVersion": "2018-07-01",
+            "apiVersion": "[variables('apiVersion')]",
             "location": "[resourcegroup().location]",
             "tags": "[parameters('tags')]",
             "kind": "StorageV2",
@@ -30,7 +33,7 @@
                 {
                     "name": "[concat('default/', parameters('containerName'))]",
                     "type": "blobServices/containers",
-                    "apiVersion": "2018-07-01",
+                    "apiVersion": "[variables('apiVersion')]",
                     "dependsOn": [
                         "[parameters('storageAccountName')]"
                     ]

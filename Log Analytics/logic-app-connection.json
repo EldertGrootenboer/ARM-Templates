@@ -3,23 +3,26 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "diagnosticName": {
-          "type": "string"
+            "type": "string"
         },
         "logicAppName": {
-          "type": "string"
+            "type": "string"
         },
         "workspaceName": {
-          "type": "string"
+            "type": "string"
         },
         "workspaceResourceGroup": {
-          "type": "string"
+            "type": "string"
         }
+    },
+    "variables": {
+        "apiVersion": "2017-05-01-preview"
     },
     "resources": [
         {
             "type": "Microsoft.Logic/workflows/providers/diagnosticSettings",
             "name": "[concat(parameters('logicAppName'), '/Microsoft.Insights/', parameters('diagnosticName'))]",
-            "apiVersion": "2017-05-01-preview",
+            "apiVersion": "[variables('apiVersion')]",
             "properties": {
                 "name": "[parameters('workspaceName')]",
                 "workspaceId": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', parameters('workspaceResourceGroup'), '/providers/Microsoft.OperationalInsights/workspaces/', parameters('workspaceName'))]",

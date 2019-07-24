@@ -26,6 +26,7 @@
         }
     },
     "variables": {
+        "apiVersion": "2017-04-01",
         "defaultProperties": {
             "lockDuration": "PT30S",
             "maxSizeInMegabytes": 1024,
@@ -43,7 +44,7 @@
     },
     "resources": [
         {
-            "apiVersion": "2017-04-01",
+            "apiVersion": "[variables('apiVersion')]",
             "name": "[concat('/', parameters('serviceBusNamespace'), '/', parameters('topicName'))]",
             "type": "Microsoft.ServiceBus/namespaces/topics",
             "properties": "[variables('queueProperties')]"

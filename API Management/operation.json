@@ -32,6 +32,7 @@
         }
     },
     "variables": {
+        "apiVersion": "2018-01-01",
         "defaultResponse": [
             {
                 "statusCode": 200,
@@ -49,7 +50,7 @@
         {
             "type": "Microsoft.ApiManagement/service/apis/operations",
             "name": "[concat(parameters('apiManagementInstanceName'), '/', parameters('apiName'), '/', parameters('name'))]",
-            "apiVersion": "2018-01-01",
+            "apiVersion": "[variables('apiVersion')]",
             "properties": {
                 "displayName": "[parameters('displayName')]",
                 "method": "[parameters('method')]",

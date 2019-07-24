@@ -12,10 +12,12 @@
             "type": "object"
         }
     },
-    "variables": {},
+    "variables": {
+        "apiVersion": "2015-04-08"
+    },
     "resources": [
         {
-            "apiVersion": "2015-04-08",
+            "apiVersion": "[variables('apiVersion')]",
             "kind": "[parameters('defaultExperience')]",
             "type": "Microsoft.DocumentDb/databaseAccounts",
             "name": "[parameters('name')]",

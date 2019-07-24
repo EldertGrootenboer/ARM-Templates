@@ -20,6 +20,7 @@
         }
     },
     "variables": {
+        "apiVersion": "2018-02-14",
         "objectIdentityResourceId": "[concat(resourceId(parameters('objectResourceGroup'), parameters('objectType'), parameters('objectName')),'/providers/Microsoft.ManagedIdentity/Identities/default')]",
         "defaultPermissions": {},
         "permissions": "[if(empty(parameters('permissions')), variables('defaultPermissions'), parameters('permissions'))]"
@@ -28,7 +29,7 @@
         {
             "type": "Microsoft.KeyVault/vaults/accessPolicies",
             "name": "[concat(parameters('keyVaultName'), '/add')]",
-            "apiVersion": "2018-02-14",
+            "apiVersion": "[variables('apiVersion')]",
             "properties": {
                 "accessPolicies": [
                     {

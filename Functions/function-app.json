@@ -20,13 +20,15 @@
     },
     "variables": {
         "location": "[resourceGroup().location]",
+        "apiVersionServerFarms": "2018-02-01",
+        "apiVersionSites": "2015-08-01",
         "storageAccountid": "[concat(resourceGroup().id,'/providers/','Microsoft.Storage/storageAccounts/', parameters('storageAccountName'))]",
         "functionWorkerRuntime": "dotnet"
     },
     "resources": [
         {
             "type": "Microsoft.Web/serverfarms",
-            "apiVersion": "2018-02-01",
+            "apiVersion": "[variables('apiVersionServerFarms')]",
             "name": "[parameters('functionAppName')]",
             "location": "[variables('location')]",
             "tags": "[parameters('tags')]",
@@ -40,7 +42,7 @@
             }
         },
         {
-            "apiVersion": "2015-08-01",
+            "apiVersion": "[variables('apiVersionSites')]",
             "type": "Microsoft.Web/sites",
             "name": "[parameters('functionAppName')]",
             "location": "[variables('location')]",

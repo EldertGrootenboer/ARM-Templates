@@ -10,8 +10,9 @@
     }
   },
   "variables": {
-    "requestSource": "rest",
     "location": "[resourceGroup().location]",
+    "apiVersion": "2015-05-01",
+    "requestSource": "rest",
     "type": "other"
   },
   "resources": [
@@ -19,7 +20,7 @@
       "name": "[parameters('name')]",
       "type": "microsoft.insights/components",
       "location": "[variables('location')]",
-      "apiVersion": "2015-05-01",
+      "apiVersion": "[variables('apiVersion')]",
       "tags": "[parameters('tags')]",
       "properties": {
         "ApplicationId": "[parameters('name')]",

@@ -19,11 +19,14 @@
             "type": "string"
         }
     },
+    "variables": {
+        "apiVersion": "2018-06-01-preview"
+    },
     "resources": [
         {
             "type": "Microsoft.ApiManagement/service/apis/diagnostics",
             "name": "[concat(parameters('apiManagementInstanceName'), '/', parameters('apiName'), '/', parameters('diagnosticsName'))]",
-            "apiVersion": "2018-06-01-preview",
+            "apiVersion": "[variables('apiVersion')]",
             "properties": {
                 "alwaysLog": "allErrors",
                 "enableHttpCorrelationHeaders": true,

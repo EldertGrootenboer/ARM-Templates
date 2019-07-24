@@ -63,9 +63,12 @@
       "type": "object"
     }
   },
+  "variables": {
+    "apiVersion": "2018-03-31"
+  },
   "resources": [
     {
-      "apiVersion": "2018-03-31",
+      "apiVersion": "[variables('apiVersion')]",
       "type": "Microsoft.ContainerService/managedClusters",
       "location": "[parameters('location')]",
       "name": "[parameters('clusterName')]",

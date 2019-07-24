@@ -15,11 +15,14 @@
             "type": "string"
         }
     },
+    "variables": {
+        "apiVersion": "2018-01-01"
+    },
     "resources": [
         {
             "type": "Microsoft.ApiManagement/service/apis/operations/policies",
             "name": "[concat(parameters('apiManagementInstanceName'), '/', parameters('apiName'), '/', parameters('operationName'), '/policy')]",
-            "apiVersion": "2018-01-01",
+            "apiVersion": "[variables('apiVersion')]",
             "properties": {
                 "policyContent": "[parameters('policyContent')]"
             }

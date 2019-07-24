@@ -13,13 +13,14 @@
         }
     },
     "variables": {
+        "apiVersion": "2015-06-01",
         "apimServiceIdentityResourceId": "[concat(resourceId(parameters('apiManagementResourceGroupName'), 'Microsoft.ApiManagement/service', parameters('apiManagementInstanceName')),'/providers/Microsoft.ManagedIdentity/Identities/default')]"
     },
     "resources": [
         {
             "type": "Microsoft.KeyVault/vaults/accessPolicies",
             "name": "[concat(parameters('keyVaultName'), '/add')]",
-            "apiVersion": "2015-06-01",
+            "apiVersion": "[variables('apiVersion')]",
             "properties": {
                 "accessPolicies": [
                     {

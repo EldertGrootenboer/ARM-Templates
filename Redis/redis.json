@@ -13,11 +13,12 @@
         }
     },
     "variables": {
+        "apiVersion": "2018-03-01",
         "skuFamily": "[if(equals(parameters('sku'), 'Premium'), 'P', 'C')]"
     },
     "resources": [
         {
-            "apiVersion": "2018-03-01",
+            "apiVersion": "[variables('apiVersion')]",
             "type": "Microsoft.Cache/Redis",
             "name": "[parameters('name')]",
             "location": "[resourceGroup().location]",

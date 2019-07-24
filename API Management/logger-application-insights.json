@@ -12,11 +12,14 @@
             "type": "string"
         }
     },
+    "variables": {
+        "apiVersion": "2018-06-01-preview"
+    },
     "resources": [
         {
             "type": "Microsoft.ApiManagement/service/loggers",
             "name": "[concat(parameters('apiManagementInstanceName'), '/', parameters('name'))]",
-            "apiVersion": "2018-06-01-preview",
+            "apiVersion": "[variables('apiVersion')]",
             "properties": {
                 "loggerType": "applicationInsights",
                 "description": null,

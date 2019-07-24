@@ -20,7 +20,7 @@
         },
         "authType": {
             "defaultValue": "basic",
-            "allowedValues":[ 
+            "allowedValues": [
                 "basic",
                 "windows"
             ],
@@ -34,13 +34,14 @@
         }
     },
     "variables": {
-        "location": "[resourceGroup().location]"
+        "location": "[resourceGroup().location]",
+        "apiVersion": "2016-06-01"
     },
     "resources": [
         {
             "type": "Microsoft.Web/connections",
             "name": "[parameters('connectionName')]",
-            "apiVersion": "2016-06-01",
+            "apiVersion": "[variables('apiVersion')]",
             "location": "[variables('location')]",
             "tags": "[parameters('tags')]",
             "properties": {
@@ -53,7 +54,7 @@
                     "database": "[parameters('databaseName')]",
                     "authType": "[parameters('authType')]",
                     "username": "[parameters('username')]",
-                    "password": "[parameters('password')]"          
+                    "password": "[parameters('password')]"
                 }
             }
         }

@@ -12,11 +12,14 @@
             "type": "string"
         }
     },
+    "variables": {
+        "apiVersion": "2018-01-01"
+    },
     "resources": [
         {
             "type": "Microsoft.ApiManagement/service/tags",
             "name": "[concat(parameters('apiManagementInstanceName'), '/', parameters('tagName'))]",
-            "apiVersion": "2018-01-01",
+            "apiVersion": "[variables('apiVersion')]",
             "properties": {
                 "displayName": "[parameters('tagName')]"
             }
@@ -24,7 +27,7 @@
         {
             "type": "Microsoft.ApiManagement/service/apis/tags",
             "name": "[concat(parameters('apiManagementInstanceName'), '/', parameters('apiName'), '/', parameters('tagName'))]",
-            "apiVersion": "2018-01-01",
+            "apiVersion": "[variables('apiVersion')]",
             "properties": {
                 "displayName": "[parameters('tagName')]"
             },
