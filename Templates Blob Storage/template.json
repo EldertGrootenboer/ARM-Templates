@@ -5,43 +5,75 @@
         "storageAccountName": {
             "type": "string"
         },
+        "containerName": {
+            "type": "string"
+        },
+        "devOpsConnectionPrincipalGuid": {
+            "type": "string",
+            "metadata": {
+                "description": "The principal to assign the role to."
+            }
+        },
+        "devOpsConnectionRoleNameGuid": {
+            "type": "string",
+            "metadata": {
+                "description": "A new GUID used to identify the role assignment."
+            }
+        },
         "tags": {
             "type": "object",
             "metadata": {
                 "description": "Gets or sets a list of key value pairs that describe the resource."
             }
-        },
-        "containerName": {
-            "type": "string"
         }
     },
     "variables": {
-        "apiVersion": "2018-07-01"
+        "apiVersionStorageAccount": "2018-02-01",
+        "apiVersionRoleAssignments": "2018-09-01-preview",
+        "kind": "StorageV2",
+        "accessTier": "Hot",
+        "supportsHttpsTrafficOnly": true,
+        "accountType": "Standard_LRS",
+        "storageBlobDataContributer": "StorageBlobDataContributor"
     },
     "resources": [
         {
             "name": "[parameters('storageAccountName')]",
             "type": "Microsoft.Storage/storageAccounts",
-            "apiVersion": "[variables('apiVersion')]",
+            "apiVersion": "[variables('apiVersionStorageAccount')]",
             "location": "[resourcegroup().location]",
             "tags": "[parameters('tags')]",
-            "kind": "StorageV2",
+            "kind": "[variables('kind')]",
             "sku": {
-                "name": "Standard_LRS"
+                "name": "[variables('accountType')]"
             },
             "properties": {
-                "accessTier": "Hot"
+                "accessTier": "[variables('accessTier')]",
+                "supportsHttpsTrafficOnly": "[variables('supportsHttpsTrafficOnly')]"
             },
             "resources": [
                 {
                     "name": "[concat('default/', parameters('containerName'))]",
                     "type": "blobServices/containers",
-                    "apiVersion": "[variables('apiVersion')]",
+                    "apiVersion": "[variables('apiVersionRoleAssignments')]",
                     "dependsOn": [
                         "[parameters('storageAccountName')]"
                     ]
                 }
             ]
+        },
+        {
+            "type": "Microsoft.Storage/storageAccounts/providers/roleAssignments",
+            "apiVersion": "[variables('apiVersionRoleAssignments')]",
+            "name": "[concat(parameters('storageAccountName'), '/Microsoft.Authorization/', parameters('devOpsConnectionRoleNameGuid'))]",
+            "dependsOn": [
+                "[resourceId('Microsoft.Storage/storageAccounts', parameters('storageAccountName'))]"
+            ],
+            "properties": {
+                "roleDefinitionId": "[variables('storageBlobDataContributer')]",
+                "principalId": "[parameters('devOpsConnectionPrincipalGuid')]",
+                "mode": "Incremental"
+            }
         }
     ]
 }
