@@ -4,19 +4,39 @@
     "parameters": {
         "connectionName": {
             "defaultValue": "sftp",
-            "type": "string"
+            "type": "string",
+            "metadata": {
+                "description": "The name of the SFTP connection being created."
+            }
         },
         "connectionDisplayName": {
-            "type": "string"
+            "type": "string",
+            "metadata": {
+                "description": "The display name of the SFTP connection being created."
+            }
         },
         "giveUpSecurityAndAcceptAnySshHostKey": {
             "type": "bool"
         },
         "hostName": {
-            "type": "string"
+            "type": "string",
+            "metadata": {
+                "description": "The address of the SFTP server."
+            }
+        },
+        "folderPath": {
+            "type": "string",
+            "defaultValue": "/",
+            "metadata": {
+                "description": "The path to the FTP folder you want to listen to."
+            }
         },
         "portNumber": {
-            "type": "int"
+            "type": "int",
+            "defaultValue": 22,
+            "metadata": {
+                "description": "The port for the SFTP server."
+            }
         },
         "sshHostKeyFingerprint": {
             "type": "string"
@@ -28,10 +48,16 @@
             "type": "securestring"
         },
         "userName": {
-            "type": "string"
+            "type": "string",
+            "metadata": {
+                "description": "The username for the SFTP server."
+            }
         },
         "password": {
-            "type": "securestring"
+            "type": "securestring",
+            "metadata": {
+                "description": "The password for the SFTP server."
+            }
         },
         "tags": {
             "type": "object",
