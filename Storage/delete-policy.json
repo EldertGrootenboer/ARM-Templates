@@ -21,12 +21,6 @@
                 "description": "Integer value indicating the age in days before we delete."
             },
             "defaultValue": null
-        },
-        "tags": {
-            "type": "object",
-            "metadata": {
-                "description": "Gets or sets a list of key value pairs that describe the resource."
-            }
         }
     },
     "variables": {
@@ -64,8 +58,7 @@
                         }
                     ]
                 }
-            },
-            "tags": "[parameters('tags')]"
+            }
         }
     ]
 }
