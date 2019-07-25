@@ -17,13 +17,6 @@
                 "description": "The address of the SFTP server."
             }
         },
-        "folderPath": {
-            "type": "string",
-            "defaultValue": "/",
-            "metadata": {
-                "description": "The path to the FTP folder you want to listen to."
-            }
-        },
         "portNumber": {
             "type": "int",
             "defaultValue": 22,
