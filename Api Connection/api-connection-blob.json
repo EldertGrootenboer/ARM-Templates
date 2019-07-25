@@ -21,6 +21,13 @@
                 "description": "Account name of the Azure Blob storage account."
             }
         },
+        "blobContainerPath": {
+            "type": "string",
+            "defaultValue": "/",
+            "metadata": {
+                "description": "The container/path of the folder you want to add files to."
+            }
+        },
         "tags": {
             "type": "object",
             "metadata": {
