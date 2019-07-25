@@ -2,13 +2,6 @@
     "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "connectionName": {
-            "defaultValue": "azureblob",
-            "type": "string",
-            "metadata": {
-                "description": "The name of the Azure Blob connection being created."
-            }
-        },
         "connectionDisplayName": {
             "type": "string",
             "metadata": {
@@ -38,19 +31,20 @@
     "variables": {
         "location": "[resourceGroup().location]",
         "apiVersion": "2016-06-01",
+        "connectionName": "azureblob",
         "storageAccountid": "[concat(resourceGroup().id,'/providers/','Microsoft.Storage/storageAccounts/', parameters('storageAccountName'))]"
     },
     "resources": [
         {
             "type": "Microsoft.Web/connections",
-            "name": "[parameters('connectionName')]",
+            "name": "[variables('connectionName')]",
             "apiVersion": "[variables('apiVersion')]",
             "location": "[variables('location')]",
             "tags": "[parameters('tags')]",
             "properties": {
                 "displayName": "[parameters('connectionDisplayName')]",
                 "api": {
-                    "id": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Web/locations/', resourcegroup().location, '/managedApis/', parameters('connectionName'))]"
+                    "id": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Web/locations/', resourcegroup().location, '/managedApis/', variables('connectionName'))]"
                 },
                 "parameterValues": {
                     "accountName": "[parameters('storageAccountName')]",
@@ -58,7 +52,7 @@
                 },
                 "testLinks": [
                     {
-                        "requestUri": "[concat('https://management.azure.com:443/subscriptions/', subscription().subscriptionId, '/resourceGroups/', resourceGroup().name, '/providers/Microsoft.Web/connections/', parameters('connectionName'), '/extensions/proxy/testconnection?api-version=2018-07-01-preview')]",
+                        "requestUri": "[concat('https://management.azure.com:443/subscriptions/', subscription().subscriptionId, '/resourceGroups/', resourceGroup().name, '/providers/Microsoft.Web/connections/', variables('connectionName'), '/extensions/proxy/testconnection?api-version=2018-07-01-preview')]",
                         "method": "get"
                     }
                 ]
