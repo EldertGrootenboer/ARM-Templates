@@ -3,16 +3,28 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "diagnosticName": {
-            "type": "string"
+            "type": "string",
+            "metadata": {
+              "description": "Name for the diagnostic setting resource."
+            }
         },
         "logicAppName": {
-            "type": "string"
+            "type": "string",
+            "metadata": {
+              "description": "Name of the Logic App on which to enable the diagnostics."
+            }
         },
         "workspaceName": {
-            "type": "string"
+            "type": "string",
+            "metadata": {
+              "description": "The name of the Log Analytics workspace."
+            }
         },
         "workspaceResourceGroup": {
-            "type": "string"
+            "type": "string",
+            "metadata": {
+              "description": "The resource group where the Log Analytics workspace can be found."
+            }
         }
     },
     "variables": {
