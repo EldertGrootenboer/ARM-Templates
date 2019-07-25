@@ -3,13 +3,28 @@
   "contentVersion": "1.0.0.0",
   "parameters": {
     "workspaceName": {
-      "type": "string"
+      "type": "string",
+      "metadata": {
+        "description": "The name for the Log Analytics workspace."
+      }
     },
     "sku": {
-      "type": "string"
+      "type": "string",
+      "defaultValue": "free",
+      "allowedValues": [
+        "free",
+        "standalone",
+        "pernode"
+      ],
+      "metadata": {
+        "description": "The SKU for the Log Analytics workspace."
+      }
     },
     "retentionInDays": {
-      "type": "int"
+      "type": "int",
+      "metadata": {
+        "description": "The workspace data retention in days. -1 means Unlimited retention for the Unlimited Sku. 730 days is the maximum allowed for all other Skus."
+      }
     },
     "tags": {
       "type": "object",
