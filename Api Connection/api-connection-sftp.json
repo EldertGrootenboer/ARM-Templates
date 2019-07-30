@@ -3,8 +3,8 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "connectionName": {
-            "defaultValue": "sftp",
             "type": "string",
+            "defaultValue": "sftp",
             "metadata": {
                 "description": "The name of the FTP connection being created."
             }
@@ -16,7 +16,8 @@
             }
         },
         "giveUpSecurityAndAcceptAnySshHostKey": {
-            "type": "bool"
+            "type": "bool",
+            "defaultValue": false
         },
         "hostName": {
             "type": "string",
@@ -32,13 +33,16 @@
             }
         },
         "sshHostKeyFingerprint": {
-            "type": "string"
+            "type": "string",
+            "defaultValue": ""
         },
         "sshPrivateKey": {
-            "type": "securestring"
+            "type": "securestring",
+            "defaultValue": ""
         },
         "sshPrivateKeyPassphrase": {
-            "type": "securestring"
+            "type": "securestring",
+            "defaultValue": ""
         },
         "userName": {
             "type": "string",
@@ -50,7 +54,8 @@
             "type": "securestring",
             "metadata": {
                 "description": "The password for the SFTP server."
-            }
+            },
+            "defaultValue": ""
         },
         "tags": {
             "type": "object",
