@@ -1,0 +1,43 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "connectionName": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of the connection being created."
+            }
+        },
+        "connectionDisplayName": {
+            "type": "string",
+            "metadata": {
+                "description": "The display name of the connection being created."
+            }
+        },
+        "tags": {
+            "type": "object",
+            "metadata": {
+                "description": "Gets or sets a list of key value pairs that describe the resource."
+            }
+        }
+    },
+    "variables": {
+        "location": "[resourceGroup().location]",
+        "apiVersion": "2016-06-01"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Web/connections",
+            "name": "[parameters('connectionName')]",
+            "apiVersion": "[variables('apiVersion')]",
+            "location": "[variables('location')]",
+            "tags": "[parameters('tags')]",
+            "properties": {
+                "displayName": "[parameters('connectionDisplayName')]",
+                "api": {
+                    "id": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', resourcegroup().name, '/providers/Microsoft.Web/customApis/', parameters('connectionName'))]"
+                }
+            }
+        }
+    ]
+}
