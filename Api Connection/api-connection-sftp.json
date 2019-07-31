@@ -38,7 +38,10 @@
         },
         "sshPrivateKey": {
             "type": "securestring",
-            "defaultValue": ""
+            "defaultValue": "",
+            "metadata": {
+                "description": "The private key used to connect to the SFTP server. NOTE: Currently doesn't work with multiline keys, needs further investigation."
+            }
         },
         "sshPrivateKeyPassphrase": {
             "type": "securestring",
