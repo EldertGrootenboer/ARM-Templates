@@ -47,7 +47,7 @@
                 },
                 "parameterValues": {
                     "accountName": "[parameters('storageAccountName')]",
-                    "accessKey": "[concat('DefaultEndpointsProtocol=https;AccountName=', parameters('storageAccountName'), ';AccountKey=', listKeys(variables('storageAccountid'),'2015-05-01-preview').key1)]"
+                    "accessKey": "[listKeys(variables('storageAccountid'),'2015-05-01-preview').key1]"
                 },
                 "testLinks": [
                     {
