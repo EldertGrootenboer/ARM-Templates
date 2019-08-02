@@ -3,10 +3,16 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "storageAccountName": {
-            "type": "string"
+            "type": "string",
+            "metadata": {
+                "description": "Account name of the Azure Blob storage account."
+            }
         },
         "containerName": {
-            "type": "string"
+            "type": "string",
+            "metadata": {
+                "description": "Name of the container to be created."
+            }
         }
     },
     "variables": {
