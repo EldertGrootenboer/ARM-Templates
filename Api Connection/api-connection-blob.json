@@ -43,7 +43,7 @@
             "properties": {
                 "displayName": "[parameters('connectionDisplayName')]",
                 "api": {
-                    "id": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Web/locations/', variables('location'), '/managedApis/', parameters('connectionName'))]"
+                    "id": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Web/locations/', variables('location'), '/managedApis/azureblob')]"
                 },
                 "parameterValues": {
                     "accountName": "[parameters('storageAccountName')]",
