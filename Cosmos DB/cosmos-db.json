@@ -16,6 +16,7 @@
         }
     },
     "variables": {
+        "location": "[resourceGroup().location]",
         "apiVersion": "2015-04-08"
     },
     "resources": [
@@ -24,15 +25,15 @@
             "kind": "[parameters('defaultExperience')]",
             "type": "Microsoft.DocumentDb/databaseAccounts",
             "name": "[parameters('name')]",
-            "location": "[resourceGroup().location]",
+            "location": "[variables('location')]",
             "tags": "[parameters('tags')]",
             "properties": {
                 "databaseAccountOfferType": "Standard",
                 "locations": [
                     {
-                        "id": "[concat(parameters('name'), '-', resourceGroup().location)]",
+                        "id": "[concat(parameters('name'), '-', variables('location'))]",
                         "failoverPriority": 0,
-                        "locationName": "[resourceGroup().location]"
+                        "locationName": "[variables('location')]"
                     }
                 ],
                 "enableMultipleWriteLocations": false,
