@@ -1,0 +1,69 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "connectionName": {
+            "defaultValue": "azureeventgrid",
+            "type": "string",
+            "metadata": {
+                "description": "The name of the Event Grid connection being created."
+            }
+        },
+        "connectionDisplayName": {
+            "type": "string",
+            "metadata": {
+                "description": "The display name of the Event Grid connection being created."
+            }
+        },
+        "clientId": {
+            "type": "string",
+            "metadata": {
+                "description": "The application or client ID associated with your service principal."
+            }
+        },
+        "clientSecret": {
+            "type": "securestring",
+            "metadata": {
+                "description": "The key value associated with your service principal."
+            }
+        },
+        "tenantId": {
+            "type": "string",
+            "metadata": {
+                "description": "The directory ID for your Azure AD tenant."
+            }
+        },
+        "tags": {
+            "type": "object",
+            "metadata": {
+                "description": "Gets or sets a list of key value pairs that describe the resource."
+            }
+        }
+    },
+    "variables": {
+        "location": "[resourceGroup().location]",
+        "apiVersion": "2016-06-01",
+        "grantType":"client_credentials"
+    },
+    "resources": [
+        {
+            "type": "Microsoft.Web/connections",
+            "apiVersion": "[variables('apiVersion')]",
+            "name": "[parameters('connectionName')]",
+            "location": "[variables('location')]",
+            "tags": "[parameters('tags')]",
+            "properties": {
+                "api": {
+                    "id": "[concat('/subscriptions/', subscription().subscriptionId, '/providers/Microsoft.Web/locations/', variables('location'), '/managedApis/azureeventgrid')]"
+                },
+                "parameterValues": {
+                    "token:clientId": "[parameters('clientId')]",
+                    "token:clientSecret": "[parameters('clientSecret')]",
+                    "token:TenantId": "[parameters('tenantId')]",
+                    "token:grantType": "[variables('grantType')]"
+                },
+                "displayName": "[parameters('connectionDisplayName')]"
+            }
+        }
+    ]
+}
