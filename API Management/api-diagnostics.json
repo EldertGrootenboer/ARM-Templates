@@ -20,7 +20,8 @@
         }
     },
     "variables": {
-        "apiVersion": "2018-06-01-preview"
+        "apiVersion": "2018-06-01-preview",
+        "samplingRate": 20
     },
     "resources": [
         {
@@ -34,7 +35,7 @@
                 "loggerId": "[concat('/subscriptions/', subscription().subscriptionId, '/resourceGroups/', resourcegroup().name, '/providers/Microsoft.ApiManagement/service/', parameters('apiManagementInstanceName'), '/loggers/', parameters('applicationInsightsName'))]",
                 "sampling": {
                     "samplingType": "fixed",
-                    "percentage": 20
+                    "percentage": "[variables('samplingRate')]"
                 },
                 "frontend": {
                     "request": {
