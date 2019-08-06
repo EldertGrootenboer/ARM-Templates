@@ -1,0 +1,45 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2018-05-01/subscriptionDeploymentTemplate.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "lockName": {
+            "type": "string",
+            "metadata": {
+                "description": "The name of lock. The lock name can be a maximum of 260 characters. The lock name can only include alphanumeric characters, periods, underscores, hyphens and parenthesis and cannot end in a period."
+            }
+        },
+        "lockLevel": {
+            "type": "string",
+            "metadata": {
+                "description": "The level of the lock."
+            },
+            "allowedValues": [
+                "NotSpecified",
+                "CanNotDelete",
+                "ReadOnly"
+            ],
+            "defaultValue": "CanNotDelete"
+        },
+        "lockDescription": {
+            "type": "string",
+            "metadata": {
+                "description": "Notes about the lock. Maximum of 512 characters."
+            },
+            "defaultValue": ""
+        }
+    },
+    "variables": {
+        "apiVersion": "2016-09-01"
+    },
+    "resources": [
+        {
+            "name": "[parameters('lockName')]",
+            "type": "Microsoft.Authorization/locks",
+            "apiVersion": "[variables('apiVersion')]",
+            "properties": {
+                "level": "[parameters('lockLevel')]",
+                "notes": "[parameters('lockDescription')]"
+            }
+        }
+    ]
+}
